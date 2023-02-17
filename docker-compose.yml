@@ -1,0 +1,42 @@
+version: '3'
+volumes:
+  postgres:
+  bundle_path_backend_api:
+services:
+  db:
+    container_name: db
+    image: postgres:11
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - environments/.env.postgres
+  frontend_app:
+    restart: on-failure:3
+    container_name: frontend_app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes: 
+      - ./frontend/:/app
+      - /node_modules
+    ports:
+      - "80:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  backend_api:
+    restart: on-failure:3
+    container_name: backend_api
+    build:
+      context: ./backend_api
+      dockerfile:  Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend_api/:/home/developer/app
+      - bundle_path_backend_api:/usr/local/bundle
+    env_file:
+      - environments/.env.backend_api
+
+      
