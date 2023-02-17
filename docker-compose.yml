@@ -19,6 +19,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     volumes: 
+      - /app/node_modules
       - ./frontend/:/app
     ports:
       - "80:3000"
