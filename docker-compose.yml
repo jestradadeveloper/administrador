@@ -1,7 +1,6 @@
 version: '3'
 volumes:
   postgres:
-  bundle_path_backend_api:
 services:
   db:
     container_name: db
@@ -36,7 +35,6 @@ services:
       - "3000:3000"
     volumes:
       - ./backend_api/:/home/developer/app
-      - bundle_path_backend_api:/usr/local/bundle
     env_file:
       - environments/.env.backend_api
 
