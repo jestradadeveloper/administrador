@@ -21,4 +21,9 @@ class User < ApplicationRecord
   validates :password_digest,
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
+
+  has_many :accounts, inverse_of: :creator, dependent: :destroy
+  has_many :members, inverse_of: :participant, dependent: :destroy
+  has_many :teams, through: :members
+  
 end
