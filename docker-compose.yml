@@ -4,6 +4,8 @@ volumes:
 services:
   db:
     container_name: db
+    networks:
+      - admin-app
     image: postgres:11
     volumes:
       - postgres:/var/lib/postgresql/data
@@ -13,11 +15,13 @@ services:
       - environments/.env.postgres
   frontend_app:
     restart: on-failure:3
-    container_name: frontend_app
+    container_name: frontend-app
+    networks:
+      - admin-app
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    volumes: 
+    volumes:
       - /app/node_modules
       - ./frontend/:/app
     ports:
@@ -27,7 +31,9 @@ services:
     stdin_open: true
   backend_api:
     restart: on-failure:3
-    container_name: backend_api
+    container_name: backend-api
+    networks:
+      - admin-app
     build:
       context: ./backend_api
       dockerfile:  Dockerfile
@@ -37,5 +43,6 @@ services:
       - ./backend_api/:/home/developer/app
     env_file:
       - environments/.env.backend_api
-
-      
+networks:
+  admin-app:
+    driver: bridge

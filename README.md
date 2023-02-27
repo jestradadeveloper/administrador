@@ -19,4 +19,4 @@ docker-compose exec backend_api bundle exec rake db:setup db:migrate
 
 ## Para acceder al bash del proyecto en rails
 
-docker exec -it backend_api bash
+docker-compose exec -it backend_api bash

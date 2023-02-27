@@ -1,4 +1,5 @@
 FROM ruby:3.0.0
+
 #add user
 RUN useradd developer
 #create folder for developer
@@ -24,4 +25,4 @@ COPY ./ .
 EXPOSE 3000
 #run server
 ENTRYPOINT [ "./entrypoints/docker-entrypoint.sh" ]
-RUN bundle 
+RUN bundle

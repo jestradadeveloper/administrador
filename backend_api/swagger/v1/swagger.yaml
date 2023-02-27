@@ -5,6 +5,276 @@
     "version": "v1"
   },
   "paths": {
+    "/api/v1/accounts": {
+      "get": {
+        "summary": "list accounts",
+        "tags": [
+          "Accounts"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "create account",
+        "tags": [
+          "Accounts"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "successful"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/account"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "show account",
+        "tags": [
+          "Accounts"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        }
+      },
+      "patch": {
+        "summary": "update account",
+        "tags": [
+          "Accounts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/account"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "update account",
+        "tags": [
+          "Accounts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/account"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete account",
+        "tags": [
+          "Accounts"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful"
+          }
+        }
+      }
+    },
+    "/api/v1/teams": {
+      "get": {
+        "summary": "list teams",
+        "tags": [
+          "Teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        }
+      },
+      "post": {
+        "summary": "create team",
+        "tags": [
+          "Teams"
+        ],
+        "parameters": [
+
+        ],
+        "responses": {
+          "201": {
+            "description": "successful"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/team"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/teams/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "show team",
+        "tags": [
+          "Teams"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        }
+      },
+      "patch": {
+        "summary": "update team",
+        "tags": [
+          "Teams"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Team ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/team"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "update team",
+        "tags": [
+          "Teams"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Team ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/team"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete team",
+        "tags": [
+          "Teams"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Team ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful"
+          }
+        }
+      }
+    },
     "/api/v1/users": {
       "get": {
         "summary": "list users",
@@ -104,6 +374,23 @@
   },
   "components": {
     "schemas": {
+      "errors_object": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "$ref": "#/components/schemas/errors_map"
+          }
+        }
+      },
+      "errors_map": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
       "user": {
         "type": "object",
         "properties": {
@@ -134,6 +421,70 @@
           "user": {
             "email": "test@test.com",
             "password": "123456"
+          }
+        }
+      },
+      "account": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "client": {
+            "type": "string"
+          },
+          "account_id": {
+            "type": "string"
+          },
+          "team_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "client",
+          "account_id",
+          "team_id"
+        ],
+        "example": {
+          "account": {
+            "name": "Jose Estrada",
+            "client": "Mind",
+            "client_id": "1",
+            "team_id": "2"
+          }
+        }
+      },
+      "team": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "start_date": {
+            "type": "string"
+          },
+          "end_date": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name,",
+          "user_id"
+        ],
+        "example": {
+          "team": {
+            "name": "Jose Estrada",
+            "description": "Description",
+            "start_date": "Start Date",
+            "end_date": "End date",
+            "user_id": "user_id"
           }
         }
       }

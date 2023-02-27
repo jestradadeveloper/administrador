@@ -277,6 +277,7 @@ DEPENDENCIES
   rswag-api
   rswag-specs
   rswag-ui
+  rubocop (~> 1.45)
   rubocop-rails
   shoulda-matchers (~> 4.5)
   simplecov

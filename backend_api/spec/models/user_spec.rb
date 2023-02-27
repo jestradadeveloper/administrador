@@ -29,5 +29,10 @@ RSpec.describe User, type: :model do
     it 'Email should not be a wrong email' do
       should_not allow_value('test').for(:email)
     end
+    context 'Relationships' do
+      it { should have_many(:members) }
+      it { should have_many(:accounts) }
+      it { should have_many(:teams) }
+    end
   end
 end

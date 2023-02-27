@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   get '/up', to: 'health_checks#index'
@@ -6,6 +7,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1, defaults: { format: 'json' } do
       resources :users
+      resources :accounts
+      resources :teams do 
+        resources :members
+      end
     end
   end
 end
