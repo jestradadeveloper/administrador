@@ -32,7 +32,7 @@ export const DashboardLayout = ({ children, title }) => {
             {title}
           </Typography>
         </Grid>
-        <main>{children}</main>
+        <main className="w-9/12 mx-auto">{children}</main>
       </Box>
     </>
   );
