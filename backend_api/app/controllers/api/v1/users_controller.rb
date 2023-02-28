@@ -5,12 +5,18 @@ module Api
       # GET /api/v1/users
       def index
         @users = User.all
-        render json: @users, status: :ok
+        
+        render json: @users, 
+        include: params[:include]&.split(','),
+        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) }, status: :ok
       end
 
       # GET /api/v1/users/{userId}
       def show
-        render json: @user, status: :ok
+        render json: @user,
+        include: params[:include]&.split(','),
+        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) }, 
+        status: :ok
       end
 
       # POST /api/v1/users

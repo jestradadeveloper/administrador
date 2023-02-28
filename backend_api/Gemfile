@@ -33,7 +33,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.0.0'
   # API documentation
   gem 'rswag-specs'
-  
   # getting fake and randmon data for seed tests
   gem 'faker'
   #linter for code styles
@@ -43,8 +42,9 @@ end
 group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'annotate'
   gem 'spring'
+  # Anotate for documenting your models
+  gem 'annotate'
 end
 group :test do
   # implementation of coverage for testing on code
@@ -67,5 +67,5 @@ gem 'honeybadger', '~> 5.0'
 gem 'rswag'
 # create data seed for our testing environments
 gem 'factory_bot_rails'
-
-gem "rubocop", "~> 1.45"
+#serializer json
+gem 'active_model_serializers', '~> 0.10.0'

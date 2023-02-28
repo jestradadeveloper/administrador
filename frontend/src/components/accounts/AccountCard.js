@@ -1,26 +1,25 @@
-import {IconButton} from "@mui/material"
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
+import CardActions from "../ui/CardActions";
+
 const AccountCard = ({ account }) => {
-  const { client, name } = account;
+  const { client, name, responsible} = account;
+  const team = account['team-assigned']
   return (
     <li className="pt-3 pb-0 sm:py-4">
       <div className="flex items-center">
         <div className="flex-col">
-          <p className="text-sm font-medium text-gray-900">
-            <strong>Account:</strong> {name}
+          <p className="text-red-500">
+            <strong>{name}</strong>
           </p>
-          <p className="text-sm font-medium text-gray-900">
+          <p>
             <strong>Client:</strong> {client}
           </p>
-          <span class="w-full flex items-center py-1">
-            <IconButton>
-              <EditRoundedIcon />
-            </IconButton>
-            <IconButton>
-              <HighlightOffRoundedIcon />
-            </IconButton>
-          </span>
+          <p>
+            <strong>Responsble:</strong> {responsible}
+          </p>
+          <p>
+            <strong>Team Assigned:</strong> {team}
+          </p>
+          <CardActions />
         </div>
       </div>
     </li>

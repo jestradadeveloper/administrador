@@ -1,26 +1,25 @@
-import {IconButton} from "@mui/material"
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
+import CardActions from "../ui/CardActions";
+
 const TeamCard = ({ team }) => {
-  const { name, description, start_date, end_date } = team;
+  const { name, description, responsible, account, people, start_date, end_date } = team;
+  const startDate = team['start-date']
+  const endDate = team['end-date']
   return (
     <li className="pt-3 pb-0 sm:py-4">
       <div className="flex items-center">
         <div className="flex-col">
-          <p className="text-sm font-medium text-gray-900">
-            <strong>Team:</strong> {name}
+          <p className="text-red-500">
+            <strong>{name}</strong>
           </p>
-          <p className="text-sm font-medium text-gray-900">
-            <strong>Description:</strong> {description}
+          <p><strong>Responsible:</strong> {responsible}</p>
+          <p><strong>Account Assigned:</strong> {account}</p>
+          <p><strong>Participants:</strong> {people}</p>
+          <strong>Working Period:</strong>
+          <p>
+          <span>{startDate} to {endDate}</span>
           </p>
-          <span class="w-full flex items-center py-1">
-            <IconButton>
-              <EditRoundedIcon />
-            </IconButton>
-            <IconButton>
-              <HighlightOffRoundedIcon />
-            </IconButton>
-          </span>
+         
+          <CardActions />
         </div>
       </div>
     </li>
