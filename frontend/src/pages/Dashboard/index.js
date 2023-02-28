@@ -12,11 +12,11 @@ export const DashboardPage = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setPosts(data.time);
+        setPosts(data.status);
       })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
-  return <DashboardLayout title="Welcome | Dashboard">{ posts ? 'Online' : ''}</DashboardLayout>;
+  return <DashboardLayout title="Welcome | Dashboard">{ posts ?  posts : ''}</DashboardLayout>;
 };
