@@ -26,8 +26,8 @@ services:
       - ./frontend/:/app
     ports:
       - "80:3000"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - environments/.env.frontend_app
     stdin_open: true
   backend_api:
     restart: on-failure:3

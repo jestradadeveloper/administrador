@@ -17,7 +17,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
       context 'Correct  user values response' do
         subject { payload_test }
-        it { is_expected.to include(:id, :email) }
+        it { is_expected.to include(:data) }
       end
     end
     let(:bad_user) { { email: 'test', password: '12345' } }

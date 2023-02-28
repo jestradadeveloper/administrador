@@ -22,11 +22,24 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class Team < ApplicationRecord
-  belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
-  has_one :account, inverse_of: :team
-  has_many :members, inverse_of: :participant
-  has_many :participants, through: :members
-  validates :name, :start_date, :end_date, presence: true
-  
+class TeamSerializer < ActiveModel::Serializer
+  attributes :id, :name, :description, :start_date, :end_date, :responsible, :account,:people
+  belongs_to :creator
+  belongs_to :account
+  has_many :participants
+  def responsible
+    object.creator.name
+  end
+  def end_date
+    object.end_date.strftime("%B %d, %Y")
+  end
+  def start_date
+    object.end_date.strftime("%B %d, %Y")
+  end
+  def people
+    object.participants.count
+  end
+  def account
+     !object.account.nil? ? object.account.name : 'unassinged'
+  end
 end

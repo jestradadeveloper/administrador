@@ -7,13 +7,19 @@ module Api
       # GET /teams.json
       def index
         @teams = Team.all
-        render json: @teams, status: :ok
+        render json: @teams,
+        include: params[:include]&.split(','),
+        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) },
+        status: :ok
       end
 
       # GET /teams/1
       # GET /teams/1.json
       def show
-        render json: @team, status: :ok
+        render json: @team,
+        include: params[:include]&.split(','),
+        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) },
+        status: :ok
       end
 
       # POST /teams

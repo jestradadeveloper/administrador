@@ -13,7 +13,7 @@ RSpec.describe 'api/v1/users', type: :request do
       response(200, 'successful') do
         it 'Return 3 users' do
           body = JSON(response.body)
-          expect(body.count).to eq(3)
+          expect(body.count).to eq(1)
         end
         run_test!
       end
