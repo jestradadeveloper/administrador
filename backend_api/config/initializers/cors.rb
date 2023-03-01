@@ -7,7 +7,7 @@
 
  Rails.application.config.middleware.insert_before 0, Rack::Cors do
     allow do
-        origins 'http://localhost' # URL used for React-side
+        origins Rails.application.secrets.allowed_origins # URL used for React-side
         resource '*',
         :headers => :any,
         :methods => [:get, :post, :patch, :delete, :options]

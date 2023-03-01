@@ -1,7 +1,6 @@
 
 import CardActions from "../ui/CardActions";
 const UserCard = ({ user }) => {
-  console.log(user)
   const { name, email } = user
   return (
     <li className="pt-3 pb-0 sm:py-4">

@@ -5,7 +5,6 @@ export default function useFetch(url){
   const [data,setData] = useState(null)
   const [error,setError] = useState(null)
   const [loading,setLoading] = useState(false)
-  console.log(`${process.env.REACT_APP_API_BASE_URL}${url}`)
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}${url}`)
         .then(response => response.json())
