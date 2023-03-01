@@ -7,14 +7,5 @@ include FactoryBot::Syntax::Methods
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-10.times do
-  create(:member)
-end
-
-10.times do
-  create(:team)
-end
-10.times do
-  create(:account)
-end
+#superadmin seed
+User.create!(email: ENV['SUPERADMIN_EMAIL'], password:ENV['SUPERADMIN_PASSWORD'])
