@@ -1,22 +1,8 @@
 import { DashboardLayout } from "../../components/layouts";
-import { useEffect, useState } from "react";
+import useFetch from '../../utils/useFetch'
 
 export const DashboardPage = () => {
-  const APIURL = "http://localhost:3000";
-  const [posts, setPosts] = useState(null)
-  useEffect(() => {
-    fetch(`${APIURL}/up`,
-      {
-        method: 'GET',
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setPosts(data.status);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
-  return <DashboardLayout title="Welcome | Dashboard">{ posts ?  posts : ''}</DashboardLayout>;
+  const {data, loading, error} = useFetch('/up')
+
+  return <DashboardLayout title="Welcome | Dashboard">{ data &&  data.status }</DashboardLayout>;
 };
