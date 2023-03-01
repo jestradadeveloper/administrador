@@ -82,7 +82,4 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: backend_api_production
-  username: backend_api
-  password: <%= ENV['BACKEND_API_DATABASE_PASSWORD'] %>
+  url: <%= ENV['ADMINISTRADOR_DATABASE_URL'] %>
