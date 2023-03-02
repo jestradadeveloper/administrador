@@ -23,7 +23,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Account < ApplicationRecord
-
+  include OrderableByTimestamp
   belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
   belongs_to :team, inverse_of: :account
   validates :client, :name, presence: true

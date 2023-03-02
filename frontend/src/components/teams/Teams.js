@@ -4,9 +4,9 @@ import TeamList from './TeamList'
 
 const Teams = () => {
   return (
-    <div className="flex w-full mx-auto">
-        <TeamList />
-        <TeamForm />
+    <div className="flex w-full mx-auto flex-col md:flex-row">
+      <TeamForm />
+      <TeamList />
     </div>
   )
 }

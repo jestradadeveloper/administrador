@@ -1,108 +1,77 @@
-import React from 'react'
-
+import { useForm } from "react-hook-form";
+import { Box, Grid, Link, TextField, Chip, Button } from "@mui/material";
+import { validations } from "../../utils";
+import { AuthContext, UserContext } from "../../context";
+import { useContext } from 'react';
 const UserForm = () => {
+  const { addNewUser } = useContext(UserContext)
+  
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onCreateUser = ({email, password}) => { 
+    addNewUser(email,password)
+  };
   return (
     <div className="w-full flex-col p-4">
       <strong>Add User</strong>
-      <form className="w-full mt-6 space-y-6" action="#" method="POST">
-        <input type="hidden" name="remember" defaultValue="true" />
-        <div className="rounded-md shadow-sm -space-y-px">
-          <div>
-            <label htmlFor="name" className="sr-only">
-              Name:
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="name"
-              autoComplete="name"
-              required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-t-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
-              placeholder="Name"
+      <form
+        className="w-full mt-6 space-y-6"
+        onSubmit={handleSubmit(onCreateUser)}
+        noValidate
+      >
+        <Box>
+          <Grid item xs={12}>
+            <TextField
+              type="email"
+              label="Email"
+              variant="filled"
+              fullWidth
+              {...register("email", {
+                required: 'Email is Required',
+                validate: validations.isEmail
+              })}
+              error={!!errors.email}
+              helperText={errors.email?.message}
             />
-          </div>
-          <div>
-            <label htmlFor="client" className="sr-only">
-              Email
-            </label>
-            <input
-              id="client"
-              name="client"
-              type="text"
-              autoComplete="client"
-              required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
-              placeholder="Email"
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              type="password"
+              label="Password"
+              variant="filled"
+              fullWidth
+              {...register("password", {
+                required: 'Password is required',
+                minLength: { value: 6, message: 'Password must be at least 6 characters' }
+              })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
             />
-          </div>
-
-          <div>
-            <label htmlFor="client" className="sr-only">
-             Password
-            </label>
-            <input
-              id="responsible"
-              name="responsible"
-              type="text"
-              autoComplete="responsible"
-              required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="client" className="sr-only">
-              Password confirmation
-            </label>
-            <input
-              id="team"
-              name="team"
-              type="text"
-              autoComplete="team"
-              required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
-              placeholder="Password confirmation"
-            />
-          </div>
-
-
-        </div>
-
-        <div>
-          <button
-            type="submit"
-            className="group relative w-full flex justify-center
-                py-2 px-4 border border-transparent text-sm font-medium
-                rounded-md text-white bg-red-600 hover:bg-red-700
-                focus:outline-none focus:ring-2 focus:ring-offset-2
-                focus:ring-red-500"
-          >
-            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-              +
-            </span>
-            Create User
-          </button>
-        </div>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              color='error'
+              type="submit"
+              variant='outlined'
+              size="large"
+              fullWidth
+              disabled={!!errors.email || !!errors.password}
+              sx={{ marginTop: 2}}
+            >
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                +
+              </span>
+              Create User
+            </Button>
+          </Grid>
+        </Box>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default UserForm
+export default UserForm;

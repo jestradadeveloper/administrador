@@ -11,28 +11,19 @@ export const AuthLayout = ({ children, title }) => {
           <title>{title}</title>
         </Helmet>
       </HelmetProvider>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="calc(100vh - 200px)"
-      >
-        <Grid
-          item
-          xs={12}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
+      <div className="flex md:flex-row flex-col justify-center items-center h-screen">
+        <div className="flex flex-col justify-between items-center h-44">
           <Brand />
-          <PersonOutlineOutlinedIcon />
-          <Typography component="h1" variant="h3">
-            {title}
-          </Typography>
-        </Grid>
-        <main>{children}</main>
-      </Box>
+          <PersonOutlineOutlinedIcon fontSize="large"/>
+          <h1 className="text-red-500 font-bold"> Welcome to Arkus</h1>
+        </div>
+        <div className="flex justify-center items-center">
+          <main>{children}</main>
+        </div>
+       
+      </div>
+
+
     </>
   );
 };

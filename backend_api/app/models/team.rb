@@ -23,10 +23,11 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Team < ApplicationRecord
+  include OrderableByTimestamp
   belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
   has_one :account, inverse_of: :team
-  has_many :members, inverse_of: :participant
-  has_many :participants, through: :members
+  has_many :members, inverse_of: :participant, dependent: :destroy
+  has_many :participants, through: :members, dependent: :destroy
   validates :name, :start_date, :end_date, presence: true
   
 end

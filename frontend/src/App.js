@@ -1,21 +1,46 @@
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LoginPage, AccountsPage, DashboardPage, ProfilePage, UsersPage, TeamsPage } from './pages';
-
-
+import "./App.css";
+import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
+import { SnackbarProvider } from 'notistack';
+import {
+  LoginPage,
+  PrivateRoute,
+  AccountsPage,
+  DashboardPage,
+  ProfilePage,
+  UsersPage,
+  TeamsPage,
+} from "./pages";
+import { AuthProvider, TeamsProvider, UserProvider } from "./context";
 function App() {
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route exact path="/" element={<LoginPage />} />
-      <Route exact path="/dashboard" element={<DashboardPage />} />
-      <Route exact path="/accounts" element={<AccountsPage />} />
-      <Route exact path="/teams" element={<TeamsPage />} />
-      <Route exact path="/profile" element={<ProfilePage />} />
-      <Route exact path="/users" element={<UsersPage />} />
-    </Routes>
-  </BrowserRouter>
-    
+    <SnackbarProvider maxSnack={3}>
+      <AuthProvider>
+        <UserProvider>
+          <TeamsProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<PrivateRoute />}>
+                  <Route path="" element={<DashboardPage />} />
+                </Route>
+                <Route path="/accounts" element={<PrivateRoute />}>
+                  <Route path="" element={<AccountsPage />} />
+                </Route>
+                <Route path="/teams" element={<PrivateRoute />}>
+                  <Route path="" element={<TeamsPage />} />
+                </Route>
+                <Route path="/users" element={<PrivateRoute />}>
+                  <Route path="" element={<UsersPage />} />
+                </Route>
+                <Route path="/profile" element={<PrivateRoute />}>
+                  <Route path="" element={<ProfilePage />} />
+                </Route>
+                <Route path="/login" element={<LoginPage />} />
+              </Routes>
+            </BrowserRouter>
+          </TeamsProvider>
+        </UserProvider>
+      </AuthProvider>
+    </SnackbarProvider>
   );
 }
 

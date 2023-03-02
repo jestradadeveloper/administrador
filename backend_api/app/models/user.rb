@@ -13,6 +13,7 @@
 #  updated_at          :datetime         not null
 #
 class User < ApplicationRecord
+  include OrderableByTimestamp
   has_secure_password
   validates :email, :password_digest, presence: true
   validates :email,
@@ -24,6 +25,6 @@ class User < ApplicationRecord
 
   has_many :accounts, inverse_of: :creator, dependent: :destroy
   has_many :members, inverse_of: :participant, dependent: :destroy
-  has_many :teams, through: :members
+  has_many :teams, through: :members, dependent: :destroy
   
 end
