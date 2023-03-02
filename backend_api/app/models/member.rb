@@ -19,6 +19,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Member < ApplicationRecord
+  include OrderableByTimestamp
   belongs_to :participant, class_name: 'User', foreign_key: 'user_id'
   belongs_to :team
 end

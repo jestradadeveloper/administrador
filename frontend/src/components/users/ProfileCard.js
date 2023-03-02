@@ -1,10 +1,10 @@
 import React from "react";
 
 const ProfileCard = ({ profile }) => {
-  const { name, email } = profile.attributes;
-  const resumeLink = profile.attributes['resume-link']
-  const englishLevel = profile.attributes['english-level']
-  const technicalInfo = profile.attributes['technical-knowledge']
+  const { name, email } = profile;
+  const resumeLink = profile['resume_link']
+  const englishLevel = profile['english-level']
+  const technicalInfo = profile['technical-knowledge']
   return (
     <div className="mx-auto w-8/12 text-center">
       <div className="p-2">

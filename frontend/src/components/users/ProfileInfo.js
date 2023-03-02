@@ -1,16 +1,13 @@
 
-
+import { useContext } from 'react';
 import useFetch from '../../utils/useFetch'
 import ProfileCard from './ProfileCard';
+import { AuthContext } from '../../context/auth/AuthContext';
 const ProfileInfo = () => {
-  const {data, loading, error} = useFetch('/users/1')
-  if(error){
-    console.log(error)
-  }
+  const { user } = useContext(AuthContext);
   return(
     <>
-     { loading && <div>Loading</div> }
-     { data && <ProfileCard profile={data}/> }
+     { user && <ProfileCard profile={user}/> }
     </>
   )
 };

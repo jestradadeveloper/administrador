@@ -13,27 +13,11 @@ export const DashboardLayout = ({ children, title }) => {
     </HelmetProvider>
      
       <Navbar />
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="start"
-        alignItems="center"
-        height="calc(100vh - 200px)"
-      >
-        <Grid
-          item
-          xs={12}
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography component="h1" variant="h3">
-            {title}
-          </Typography>
-        </Grid>
-        <main className="w-9/12 mx-auto">{children}</main>
-      </Box>
+      <div className="flex flex-col justify-center items-center w-10/12 mx-auto">
+          <h1 className="font-bold text-lg md:text-3xl w-full mb-6 text-center">{title}</h1>
+          <main className="flex flex-col w-10/12 mx-auto">{children}</main>
+      </div>
+     
     </>
   );
 };

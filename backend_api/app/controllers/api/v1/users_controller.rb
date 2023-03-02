@@ -4,11 +4,12 @@ module Api
       before_action :find_user,  only: [:show, :update, :destroy]
       # GET /api/v1/users
       def index
-        @users = User.all
+        @users = User.by_recently_created
         
         render json: @users, 
         include: params[:include]&.split(','),
-        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) }, status: :ok
+        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) }, 
+        status: :ok
       end
 
       # GET /api/v1/users/{userId}

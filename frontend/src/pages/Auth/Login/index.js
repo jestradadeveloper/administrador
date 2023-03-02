@@ -1,32 +1,96 @@
-import { Box, Grid, Link, TextField } from "@mui/material";
+import { useState, useContext , useEffect} from "react";
+import { Box, Grid, Link, TextField, Chip, Button } from "@mui/material";
 import { AuthLayout } from "../../../components/layouts";
-
+import { ErrorOutline } from "@mui/icons-material";
+import { useForm } from "react-hook-form";
+import { validations } from "../../../utils";
+import { AuthContext } from '../../../context/auth/AuthContext';
+import { useNavigate } from 'react-router-dom';
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const { loginUser, isLoggedIn } = useContext(AuthContext)
+  useEffect(() => {
+    if(isLoggedIn){
+      navigate('/',{replace:true})
+    }
+  }, [])
+  
+  const [showError, setShowError] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const onLoginUser = async ({ email, password }) => {
+    const isLoggedIn = await loginUser(email,password)
+    if (!isLoggedIn) {
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
+      return;
+    }
+    //Route to dashboard
+    navigate('/',{replace:true})
+   
+  };
   return (
     <AuthLayout title={"Ingresar"}>
-      <Box sx={{ width: 350, padding: "10px 20px", mt: 15 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField label="Email" variant="filled" fullWidth />
+      <form onSubmit={handleSubmit(onLoginUser)} noValidate>
+        <Box sx={{ width: 350, padding: "10px 20px" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Chip
+                label="User email and password are not valid"
+                color="error"
+                icon={<ErrorOutline />}
+                className="fadeIn"
+                sx={{ display: showError ? "flex" : "none" }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                type="email"
+                label="Email"
+                variant="filled"
+                fullWidth
+                {...register("email", {
+                  required: 'Email is Required',
+                  validate: validations.isEmail
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                type="password"
+                label="Password"
+                variant="filled"
+                fullWidth
+                {...register("password", {
+                  required: 'Password is required',
+                  minLength: { value: 6, message: 'Password must be at least 6 characters' }
+                })}
+                error={!!errors.password}
+                helperText={errors.password?.message}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                color='error'
+                type="submit"
+                variant='outlined'
+                size="large"
+                fullWidth
+                disabled={!!errors.email || !!errors.password}
+              >
+                Login
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Password"
-              type="password"
-              variant="filled"
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <button
-              className="bg-red-500 text-white w-full py-3 rounded-md"
-            
-            >
-              Ingresar
-            </button>
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </form>
     </AuthLayout>
   );
 };

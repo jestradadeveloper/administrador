@@ -1,9 +1,11 @@
 import TeamCard from "./TeamCard";
-import useFetch from "../../utils/useFetch";
 import ListLayout from "../layouts/ListLayout";
+import { useContext } from 'react';
+import { TeamsContext } from "../../context";
 
 const TeamList = () => {
-  const { data: teams, loading, error } = useFetch("/teams");
+
+  const { teams, updatedTeam } = useContext(TeamsContext);
 
   return (
     <ListLayout>
