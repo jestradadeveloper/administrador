@@ -1,13 +1,12 @@
-import { IconButton, Button } from "@mui/material";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
-import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 
-const TeamCard = ({ team }) => {
-  const { name, description, responsible, account, people, start_date, end_date } = team;
+import CardActions from "../ui/CardActions";
+import { useDispatch } from 'react-redux';
+import { destroyTeamById } from "../../store/teams/thunks";
+const TeamCard = ({ team, id }) => {
+  const { name, description, responsible, account, people } = team;
   const startDate = team['start-date']
   const endDate = team['end-date']
-
+  const dispatch = useDispatch();
   return (
     <li className="pt-3 pb-0 sm:py-4">
       <div className="flex items-center">
@@ -22,19 +21,7 @@ const TeamCard = ({ team }) => {
           <p>
             <span>{startDate} to {endDate}</span>
           </p>
-
-          <span className="w-full flex items-center py-1">
-            <IconButton>
-              <VisibilityRoundedIcon />
-            </IconButton>
-            <IconButton>
-              <EditRoundedIcon />
-            </IconButton>
-
-            <Button>
-              <HighlightOffRoundedIcon />
-            </Button>
-          </span>
+          <CardActions resourceCallback={() => {dispatch(destroyTeamById(id)) }}  />
         </div>
       </div>
     </li>

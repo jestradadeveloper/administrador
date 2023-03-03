@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider } from "notistack";
 import {
   LoginPage,
   PrivateRoute,
@@ -11,12 +11,15 @@ import {
   TeamsPage,
 } from "./pages";
 import { AuthProvider, TeamsProvider, UserProvider } from "./context";
+import { Provider } from "react-redux";
+import { store } from "./store";
+
 function App() {
   return (
-    <SnackbarProvider maxSnack={3}>
-      <AuthProvider>
-        <UserProvider>
-          <TeamsProvider>
+    <Provider store={store}>
+      <SnackbarProvider maxSnack={3}>
+        <AuthProvider>
+          <UserProvider>
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<PrivateRoute />}>
@@ -37,10 +40,10 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
               </Routes>
             </BrowserRouter>
-          </TeamsProvider>
-        </UserProvider>
-      </AuthProvider>
-    </SnackbarProvider>
+          </UserProvider>
+        </AuthProvider>
+      </SnackbarProvider>
+    </Provider>
   );
 }
 
