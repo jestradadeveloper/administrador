@@ -12,7 +12,7 @@ export const getAccounts = () => {
 
 export const addNewAccount = (name, client) => {
   return async (dispatch, getState) => {
-    const { data } = await admApi.post("/accounts", { account: { name, client, user_id: 2, team_id: 1 } });
+    const { data } = await admApi.post("/accounts", { account: { name, client, user_id: 1, team_id: 1 } });
     dispatch(addAccount({ account: data.data }))
   }
 };

@@ -8,7 +8,7 @@ const TeamForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onTeamCreate = ({ name, description, startDate, endDate }) => {
     //addNewTeam(name, description, responsible, participants)
-    dispatch(addNewTeam(name, description, startDate, endDate, 2))
+    dispatch(addNewTeam(name, description, startDate, endDate, 1))
     //console.log(data)
   }
 
