@@ -1,6 +1,9 @@
+import { destroyAccountById } from "../../store/accounts/thunks";
 import CardActions from "../ui/CardActions";
+import { useDispatch } from 'react-redux';
 
-const AccountCard = ({ account }) => {
+const AccountCard = ({ account, id }) => {
+  const dispatch = useDispatch();
   const { client, name, responsible} = account;
   const team = account['team-assigned']
   return (
@@ -19,8 +22,8 @@ const AccountCard = ({ account }) => {
           <p>
             <strong>Team Assigned:</strong> {team}
           </p>
-          <CardActions />
-        </div>
+          <CardActions resourceCallback={() => {dispatch(destroyAccountById(id)) }}  />
+        </div> 
       </div>
     </li>
   );

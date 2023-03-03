@@ -3,17 +3,17 @@ import { Box, Grid, Link, TextField, Chip, Button } from "@mui/material";
 import { validations } from "../../utils";
 import { AuthContext, UserContext } from "../../context";
 import { useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import { addNewUser } from "../../store/users/thunks";
 const UserForm = () => {
-  const { addNewUser } = useContext(UserContext)
-  
-
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onCreateUser = ({email, password}) => { 
-    addNewUser(email,password)
+    dispatch(addNewUser(email,password))
   };
   return (
     <div className="w-full flex-col p-4">

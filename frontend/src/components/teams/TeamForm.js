@@ -1,9 +1,22 @@
 
+import { useForm } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { addNewTeam } from '../../store/teams/thunks';
+
 const TeamForm = () => {
+  const dispatch = useDispatch();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const onTeamCreate = ({ name, description, startDate, endDate }) => {
+    //addNewTeam(name, description, responsible, participants)
+    dispatch(addNewTeam(name, description, startDate, endDate, 2))
+    //console.log(data)
+  }
+
+
   return (
     <div className="w-full flex-col p-4">
       <strong>Add Team</strong>
-      <form className="w-full mt-6 space-y-3" action="#" method="POST">
+      <form className="w-full mt-6 space-y-3" onSubmit={handleSubmit(onTeamCreate)} noValidate>
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
@@ -13,15 +26,13 @@ const TeamForm = () => {
             <input
               id="name"
               name="name"
-              type="name"
+              type="text"
               autoComplete="name"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-t-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="Team Name"
+              {...register("name", {
+                required: 'Team Name is Required'
+              })}
             />
           </div>
           <div>
@@ -34,12 +45,10 @@ const TeamForm = () => {
               type="text"
               autoComplete="description"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="Team Description"
+              {...register("description", {
+                required: 'Description is Required'
+              })}
             />
           </div>
 
@@ -50,15 +59,13 @@ const TeamForm = () => {
             <input
               id="startDate"
               name="startDate"
-              type="text"
+              type="date"
               autoComplete="startDate"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="Start Date"
+              {...register("startDate", {
+                required: 'Start Date is Required'
+              })}
             />
           </div>
           <div>
@@ -68,47 +75,25 @@ const TeamForm = () => {
             <input
               id="endDate"
               name="endDate"
-              type="text"
+              type="date"
               autoComplete="endDate"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="End Date"
+              {...register("endDate", {
+                required: 'End Date is Required'
+              })}
             />
           </div>
           <div>
             <label htmlFor="client" className="sr-only">
-              Members
+              Add Members
             </label>
-            <input
-              id="member_id"
-              name="member_id"
-              type="text"
-              autoComplete="member_id"
-              required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
-              placeholder="Members"
-            />
           </div>
-
-
         </div>
-
         <div>
           <button
             type="submit"
-            className="group relative w-full flex justify-center
-                py-2 px-4 border border-transparent text-sm font-medium
-                rounded-md text-white bg-red-600 hover:bg-red-700
-                focus:outline-none focus:ring-2 focus:ring-offset-2
-                focus:ring-red-500"
+            className="btn-primary"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               +

@@ -1,10 +1,19 @@
-import React from 'react'
+import { useForm } from "react-hook-form";
+import { useDispatch } from 'react-redux';
+import { addNewAccount } from '../../store/accounts/thunks';
 
 const AccountForm = () => {
+  const dispatch = useDispatch();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const onAccountCreate = ({name, client}) => {
+    //addNewTeam(name, description, responsible, participants)
+    dispatch(addNewAccount(name, client))
+    //console.log(data)
+  }
   return (
     <div className="w-full flex-col p-4">
       <strong>Add Account</strong>
-      <form className="w-full mt-6 space-y-3" action="#" method="POST">
+      <form className="w-full mt-6 space-y-3" onSubmit={handleSubmit(onAccountCreate)} noValidate>
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
@@ -14,15 +23,13 @@ const AccountForm = () => {
             <input
               id="name"
               name="name"
-              type="name"
+              type="text"
               autoComplete="name"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-t-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="Account Name"
+              {...register("name", {
+                required: 'Name is Required'
+              })}
             />
           </div>
           <div>
@@ -35,12 +42,10 @@ const AccountForm = () => {
               type="text"
               autoComplete="client"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="Client Name"
+              {...register("client", {
+                required: 'Client Name is Required'
+              })}
             />
           </div>
 
@@ -54,17 +59,12 @@ const AccountForm = () => {
               type="text"
               autoComplete="responsible"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="Responsible"
             />
           </div>
 
           <div>
-            <label htmlFor="client" className="sr-only">
+            <label htmlFor="team" className="sr-only">
               Team
             </label>
             <input
@@ -73,27 +73,12 @@ const AccountForm = () => {
               type="text"
               autoComplete="team"
               required
-              className="appearance-none rounded-none relative block
-                  w-full px-3 py-2 border border-gray-300
-                  placeholder-gray-500 text-gray-900 rounded-b-md
-                  focus:outline-none focus:ring-red-500
-                  focus:border-red-500 focus:z-10 sm:text-sm"
               placeholder="Team"
             />
           </div>
-
-
         </div>
-
         <div>
-          <button
-            type="submit"
-            className="group relative w-full flex justify-center
-                py-2 px-4 border border-transparent text-sm font-medium
-                rounded-md text-white bg-red-600 hover:bg-red-700
-                focus:outline-none focus:ring-2 focus:ring-offset-2
-                focus:ring-red-500"
-          >
+          <button type="submit" className="btn-primary">
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               +
             </span>
@@ -102,7 +87,7 @@ const AccountForm = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AccountForm
+export default AccountForm;

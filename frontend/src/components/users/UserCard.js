@@ -1,22 +1,12 @@
-import { useContext } from 'react';
-import { UserContext } from '../../context';
-import { IconButton, Button } from "@mui/material";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
-import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
-import { useNavigate } from 'react-router-dom';
 
-const UserCard = ({ user }) => {
-  const navigate = useNavigate();
+import { useDispatch } from 'react-redux';
+import { destroyUserById } from '../../store/users/thunks';
+import CardActions from '../ui/CardActions';
+const UserCard = ({ user,id }) => {
   const { name, email } = user.attributes;
-  const { destroyUser } = useContext(UserContext)
-  const onDestroy = () => {
-    const userToDelete = {
-      ...user
-    }
-    destroyUser(userToDelete, true);
-   //navigate('/users',{replace:true})
-  }
+  const totalAccounts = user.attributes['total-accounts']
+  const totalTeams = user.attributes['total-teams']
+  const dispatch = useDispatch();
 
   return (
     <li className="pt-3 pb-0 sm:py-4">
@@ -30,18 +20,9 @@ const UserCard = ({ user }) => {
           <p>
             <strong>Email:</strong> {email}
           </p>
-          <span className="w-full flex items-center py-1">
-            <IconButton>
-              <VisibilityRoundedIcon />
-            </IconButton>
-            <IconButton>
-              <EditRoundedIcon />
-            </IconButton>
-
-            <Button onClick={onDestroy}>
-              <HighlightOffRoundedIcon />
-            </Button>
-          </span>
+          <span><strong>Teams:</strong> {totalTeams} </span>
+          <span><strong>Accounts:</strong> {totalAccounts} </span>
+          <CardActions resourceCallback={() => {dispatch(destroyUserById(id)) }}  />
         </div>
       </div>
     </li>

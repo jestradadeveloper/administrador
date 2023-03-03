@@ -13,7 +13,13 @@
 #  updated_at          :datetime         not null
 #
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :email, :english_level, :resume_link, :technical_knowledge
+  attributes :id, :name, :email, :english_level, :resume_link, :technical_knowledge, :total_teams, :total_accounts
   has_many :accounts
   has_many :teams
+  def total_teams
+    object.teams.count
+  end
+  def total_accounts
+    object.accounts.count
+  end
 end
