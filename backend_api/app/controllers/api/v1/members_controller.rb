@@ -6,9 +6,8 @@ class Api::V1::MembersController < ApplicationController
   end
   def create
     @users = User.where(id: params[:member][:user_ids].map(&:to_i) )
-    puts "es>>>#{@users}"
     @users.each do | user|
-       Member.create(user_id: user.id, team_id: @team.id)
+      Member.create(user_id: user.id, team_id: @team.id)
     end
     if @team.members
       render json: @team.members, status: 201

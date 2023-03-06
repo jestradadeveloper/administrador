@@ -6,7 +6,7 @@ module Api
       # GET /teams
       # GET /teams.json
       def index
-        @teams = @current_user.teams
+        @teams = Team.all
         render json: @teams,
         include: params[:include]&.split(','),
         fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) },

@@ -6,8 +6,8 @@ module Api
       before_action :check_owner, only: %i[update destroy]
       # GET /api/v1/users
       def index
-        @users = User.where.not(id: @current_user.id).by_recently_created
-        render json: @users, 
+        @users = User.all.by_recently_created
+        render json: @users,
         include: params[:include]&.split(','),
         fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) }, 
         status: :ok

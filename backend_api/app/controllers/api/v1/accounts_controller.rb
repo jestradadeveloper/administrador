@@ -6,7 +6,7 @@ module Api
       # GET /accounts
       # GET /accounts.json
       def index
-        @accounts =  @current_user.accounts
+        @accounts = Account.all
         render json: @accounts, status: :ok
       end
 
