@@ -1,16 +1,18 @@
 class Api::V1::MembersController < ApplicationController
-  before_action :set_team, only: %i[ show update destroy create]
+  before_action :set_team, only: %i[show update destroy create]
   def index
     @member = Member.all
     render json: @member, status: :ok
   end
   def create
-    @users = User.where(id: params[:member][:user_ids].map(&:to_i) )
-    @users.each do | user|
-      Member.create(user_id: user.id, team_id: @team.id)
+    user_ids = params[:member][:user_ids]
+    user_ids.each do |user_id|
+      user_id.to_sym
+      @member = Member.find_or_create_by!(user_id: user_id, team_id: @team.id)
     end
-    if @team.members
-      render json: @team.members, status: 201
+
+    if @team.participants
+      render json: @team.participants, status: 201
     else
       render json: { errors: @members.errors }, status: 422
     end
@@ -23,7 +25,9 @@ class Api::V1::MembersController < ApplicationController
   def show
     render json: @member, status: :ok
   end
+
   private
+
   def set_team
     @team = Team.find(params[:member][:team_id])
   end

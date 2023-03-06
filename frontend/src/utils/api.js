@@ -1,9 +1,9 @@
 import axios from "axios";
-import Cookies from "js-cookie";
+import authHeader from "./headers";
 
 const admApi = axios.create({
   baseURL: `${process.env.REACT_APP_API_BASE_URL}`,
-  headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+  headers: authHeader(),
 });
 
 export default admApi;

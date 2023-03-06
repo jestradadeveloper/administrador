@@ -1,26 +1,37 @@
 module Api
   module V1
     class TeamsController < ApplicationController
-      before_action :set_team, only: %i[ show update destroy ]
+      before_action :set_team, only: %i[show update destroy]
       before_action :check_owner, only: %i[update destroy]
-      before_action :authenticate_user, only: :destroy
       # GET /teams
       # GET /teams.json
       def index
         @teams = Team.all
         render json: @teams,
-        include: params[:include]&.split(','),
-        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) },
-        status: :ok
+               include: params[:include]&.split(","),
+               fields:
+                 params[:fields]
+                   &.as_json
+                   &.symbolize_keys
+                   &.transform_values { |value|
+                   value.split(",").map(&:to_sym)
+                 },
+               status: :ok
       end
 
       # GET /teams/1
       # GET /teams/1.json
       def show
         render json: @team,
-        include: params[:include]&.split(','),
-        fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) },
-        status: :ok
+               include: params[:include]&.split(","),
+               fields:
+                 params[:fields]
+                   &.as_json
+                   &.symbolize_keys
+                   &.transform_values { |value|
+                   value.split(",").map(&:to_sym)
+                 },
+               status: :ok
       end
 
       # POST /teams
@@ -51,17 +62,24 @@ module Api
       end
 
       private
-        # Use callbacks to share common setup or constraints between actions.
-        def set_team
-          @team = Team.find(params[:id])
-        end
-        def check_owner
-          head :forbidden unless @team.user_id == current_user&.id
-        end
-        # Only allow a list of trusted parameters through.
-        def team_params
-          params.require(:team).permit(:name, :description, :start_date, :end_date, :user_id)
-        end
+
+      # Use callbacks to share common setup or constraints between actions.
+      def set_team
+        @team = Team.find(params[:id])
+      end
+      def check_owner
+        head :forbidden unless @team.user_id == @current_user&.id
+      end
+      # Only allow a list of trusted parameters through.
+      def team_params
+        params.require(:team).permit(
+          :name,
+          :description,
+          :start_date,
+          :end_date,
+          :user_id,
+        )
+      end
     end
-  end 
+  end
 end

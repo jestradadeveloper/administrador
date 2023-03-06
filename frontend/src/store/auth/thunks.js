@@ -20,7 +20,6 @@ export const startLoginAuthentication = (email, password) => {
       })
       .then((response) => {
         localStorage.setItem("token", JSON.stringify(response.data));
-        console.log(response.data);
         dispatch(login(response.data));
         //aqui deberia cargar todos los nuevos datos
       })
@@ -32,11 +31,6 @@ export const startLoginAuthentication = (email, password) => {
           })
         )
       );
-
-    //console.log(data);
-    //dispatch(login(data));
-    //const { token } = data;
-    //localStorage.setItem("token", JSON.stringify(token));
   };
 };
 
@@ -46,7 +40,7 @@ export const validateAuthSession = () => {
       const token = localStorage.getItem("token")
         ? localStorage.getItem("token")
         : "";
-      console.log(token);
+
       dispatch(validateAuth(token));
     } catch (error) {
       localStorage.removeItem("token");

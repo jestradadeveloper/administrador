@@ -3,11 +3,11 @@ module ExceptionHandler
   class DecodeError < StandardError; end
   class ExpiredSignature < StandardError; end
   included do
-    rescue_from CanCan::AccessDenied do |_error|
-      render json: {
-        message: 'We are sorry, but you do not have permissions to perform this action.'
-      }, status: :unauthorized
-    end
+    ##rescue_from CanCan::AccessDenied do |_error|
+    ##  render json: {
+    ##    message: 'We are sorry, but you do not have permissions to perform this action.'
+    ##  }, status: :unauthorized
+    ##end
     rescue_from ActiveRecord::RecordNotFound do |error|
       render json: {
         message: error.message

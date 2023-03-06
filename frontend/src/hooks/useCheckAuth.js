@@ -20,7 +20,7 @@ export const useCheckAuth = () => {
         });
         dispatch(validateAuthSession(data));
         dispatch(login(data));
-        console.log(token);
+
         return true;
       } else {
         dispatch(logout());

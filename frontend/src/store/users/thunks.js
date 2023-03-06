@@ -16,7 +16,6 @@ export const getUsers = () => {
       .get(`/users`, { headers: authHeader() })
       .then((response) => {
         dispatch(setUsers({ users: response.data.data }));
-        console.log(response);
       })
       .catch((error) => console.log(error));
   };
@@ -31,7 +30,6 @@ export const addNewUser = (email, password, name) => {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log(response);
         dispatch(addUser({ user: response.data.data }));
       })
       .catch((error) => {

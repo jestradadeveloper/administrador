@@ -1,7 +1,7 @@
 module Api
   module V1
     class AccountsController < ApplicationController
-      before_action :set_account, only: %i[ show update destroy ]
+      before_action :set_account, only: %i[show update destroy]
       before_action :check_owner, only: %i[update destroy]
       # GET /accounts
       # GET /accounts.json
@@ -24,7 +24,10 @@ module Api
         if @account.save
           render json: @account, status: :created
         else
-          render json: { errors: @account.errors.messages }, status: :unprocessable_entity
+          render json: {
+                   errors: @account.errors.messages,
+                 },
+                 status: :unprocessable_entity
         end
       end
 
@@ -45,18 +48,19 @@ module Api
       end
 
       private
-        # Use callbacks to share common setup or constraints between actions.
-        def set_account
-          @account = Account.find(params[:id])
-        end
-        #only allow to the owner delete their accounts
-        def check_owner
-          head :forbidden unless @account.user_id == current_user&.id
-        end
-        # Only allow a list of trusted parameters through.
-        def account_params
-          params.require(:account).permit(:name, :client, :user_id, :team_id)
-        end
+
+      # Use callbacks to share common setup or constraints between actions.
+      def set_account
+        @account = Account.find(params[:id])
+      end
+      #only allow to the owner delete their accounts
+      def check_owner
+        head :forbidden unless @account.user_id == @current_userr&.id
+      end
+      # Only allow a list of trusted parameters through.
+      def account_params
+        params.require(:account).permit(:name, :client, :user_id, :team_id)
+      end
     end
   end
 end
