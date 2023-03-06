@@ -1,28 +1,56 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const usersSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState: {
+    isSaving: false,
     users: [],
-    isLoading: false
+    isLoading: false,
+    active: null,
+    error: false,
+    errorMessages: null,
   },
   reducers: {
-    refreshUsers: (state, action ) => {
+    refreshUsers: (state, action) => {
       state.teams = action.payload.users;
     },
     addUser: (state, action) => {
-      state.users.unshift(action.payload.user)
+      state.users.unshift(action.payload.user);
     },
     setUsers: (state, action) => {
       state.isLoading = false;
       state.users = action.payload.users;
     },
-    destroyUser: (state, payload) => {
+    destroyUser: (state, action) => {
+      state.users = state.users.filter((obj) => obj.id !== action.payload.id);
+    },
+    setActiveUser: (state, action) => {
+      state.active = action.payload;
+    },
+    savingNewUser: (state) => {
+      state.isSaving = true;
     },
     startLoadingUsers: (state) => {
       state.isLoading = true;
-    }
-  }
+    },
+    destroyUsersData: (state, action) => {
+      state.users = [];
+    },
+    updateErrorUserState: (state, action) => {
+      state.error = action.payload.error;
+      state.errorMessages = action.payload.message;
+    },
+  },
 });
 // Action creators are generated for each case reducer function
-export const { addUser,refreshUsers, setUsers, destroyUser, startLoadingUsers } = usersSlice.actions;
+export const {
+  addUser,
+  setActiveUser,
+  savingNewUser,
+  refreshUsers,
+  setUsers,
+  destroyUser,
+  startLoadingUsers,
+  destroyUsersData,
+  updateErrorUserState,
+} = usersSlice.actions;

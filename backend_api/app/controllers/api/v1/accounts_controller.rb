@@ -2,11 +2,11 @@ module Api
   module V1
     class AccountsController < ApplicationController
       before_action :set_account, only: %i[ show update destroy ]
-
+      before_action :check_owner, only: %i[update destroy]
       # GET /accounts
       # GET /accounts.json
       def index
-        @accounts = Account.all
+        @accounts =  @current_user.accounts
         render json: @accounts, status: :ok
       end
 
@@ -19,7 +19,9 @@ module Api
       # POST /accounts
       # POST /accounts.json
       def create
-        @account = Account.new(account_params)
+        #@account = Account.build(account_params)
+        @account = @current_user.accounts.build(account_params)
+        #@account.creator = @current_user
 
         if @account.save
           render json: @account, status: :created
@@ -49,7 +51,10 @@ module Api
         def set_account
           @account = Account.find(params[:id])
         end
-
+        #only allow to the owner delete their accounts
+        def check_owner
+          head :forbidden unless @account.user_id == @current_user&.id
+        end
         # Only allow a list of trusted parameters through.
         def account_params
           params.require(:account).permit(:name, :client, :user_id, :team_id)

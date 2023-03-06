@@ -23,8 +23,9 @@ class User < ApplicationRecord
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
 
-  has_many :accounts, inverse_of: :creator, dependent: :destroy
-  has_many :members, inverse_of: :participant, dependent: :destroy
-  has_many :teams, through: :members, dependent: :destroy
+  has_many :accounts, inverse_of: :creator, dependent: :delete_all
+  has_many :members, inverse_of: :participant, dependent: :delete_all
+  has_many :teams, inverse_of: :creator, dependent: :delete_all
+  has_many :participants, through: :members, dependent: :delete_all
   
 end

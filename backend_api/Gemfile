@@ -75,3 +75,5 @@ gem 'rolify'
 gem 'cancancan'
 #json web token encode and decode
 gem "jwt", "~> 2.2"
+#environment variables
+gem 'dotenv-rails', groups: [:development, :test]

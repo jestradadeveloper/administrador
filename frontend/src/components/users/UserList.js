@@ -1,16 +1,12 @@
 import ListLayout from "../layouts/ListLayout";
 import UserCard from "./UserCard";
-import { useContext, useEffect } from 'react';
-import { UserContext } from '../../context';
+import { useContext, useEffect } from "react";
+import { UserContext } from "../../context";
 import { getUsers } from "../../store/users/thunks";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
 const UserList = () => {
-  const dispatch = useDispatch()
-  const { users, isLoading } = useSelector((state) => state.users)
-  useEffect(() => { 
-    dispatch(getUsers())
-  }, [])
+  const { users, isLoading } = useSelector((state) => state.users);
   return (
     <ListLayout title="Users">
       {users &&

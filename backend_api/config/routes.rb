@@ -11,9 +11,9 @@ Rails.application.routes.draw do
       get '/up', to: 'health_checks#index'
       resources :users
       resources :accounts
-      resources :teams do 
-        resources :members
-      end
+      resources :teams
+      resources :members
+      post '/participant', to: 'members#destroy'
     end
   end
 end

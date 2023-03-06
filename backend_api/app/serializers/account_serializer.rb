@@ -27,7 +27,7 @@ class AccountSerializer < ActiveModel::Serializer
   
   belongs_to :team
   def responsible
-    object.creator.name
+    object.creator.email
   end
   def team_assigned
     object.team.name

@@ -28,16 +28,19 @@ class TeamSerializer < ActiveModel::Serializer
   belongs_to :account
   has_many :participants
   def responsible
-    object.creator.name
+    object.creator.email
+  end
+  def participants
+    object.participants
   end
   def end_date
-    object.end_date.strftime("%B %d, %Y")
+    object.end_date.strftime("%Y-%m-%d")
   end
   def start_date
-    object.end_date.strftime("%B %d, %Y")
+    object.start_date.strftime("%Y-%m-%d")
   end
   def people
-    object.participants.count
+    object.participants.group_by(&:id).count
   end
   def account
      !object.account.nil? ? object.account.name : 'unassinged'
