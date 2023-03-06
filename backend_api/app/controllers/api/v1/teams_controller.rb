@@ -4,6 +4,7 @@ module Api
       before_action :set_team, only: %i[ show update destroy ]
       before_action :check_owner, only: %i[update destroy]
       before_action :authenticate_user, only: :destroy
+      skip_before_action :autenticate_request, only: [:index]
       # GET /teams
       # GET /teams.json
       def index
