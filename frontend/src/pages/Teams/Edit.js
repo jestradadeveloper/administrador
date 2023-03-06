@@ -19,7 +19,6 @@ const TeamPageEdit = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setUsers());
     dispatch(showParticipantsByTeamId(teamId));
   }, [teamId]);
   useEffect(() => {
