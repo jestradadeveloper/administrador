@@ -1,4 +1,7 @@
 module Authenticable
+  extend ActiveSupport::Concern
+  require 'json_web_token'
+
   def current_user
     return @current_user if @current_user
     header = request.headers['Authorization']
