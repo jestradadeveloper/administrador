@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include ExceptionHandler
   include AuthenticateRequest
+  before_action :autenticate_request
   before_action :current_user
 
   def autenticate_request
