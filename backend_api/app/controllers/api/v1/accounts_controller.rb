@@ -6,7 +6,7 @@ module Api
       # GET /accounts
       # GET /accounts.json
       def index
-        @accounts = Account.all
+        @accounts = current_user.accounts
         render json: @accounts, status: :ok
       end
 
@@ -19,9 +19,7 @@ module Api
       # POST /accounts
       # POST /accounts.json
       def create
-        #@account = Account.build(account_params)
-        @account = @current_user.accounts.build(account_params)
-        #@account.creator = @current_user
+        @account = current_user.accounts.build(account_params)
 
         if @account.save
           render json: @account, status: :created
@@ -53,7 +51,7 @@ module Api
         end
         #only allow to the owner delete their accounts
         def check_owner
-          head :forbidden unless @account.user_id == @current_user&.id
+          head :forbidden unless @account.user_id == current_user&.id
         end
         # Only allow a list of trusted parameters through.
         def account_params

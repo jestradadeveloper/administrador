@@ -6,7 +6,7 @@ module Api
       # GET /teams
       # GET /teams.json
       def index
-        @teams = Team.all
+        @teams = current_user.teams
         render json: @teams,
         include: params[:include]&.split(','),
         fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) },
@@ -55,7 +55,7 @@ module Api
           @team = Team.find(params[:id])
         end
         def check_owner
-          head :forbidden unless @team.user_id == @current_user&.id
+          head :forbidden unless @team.user_id == current_user&.id
         end
         # Only allow a list of trusted parameters through.
         def team_params
