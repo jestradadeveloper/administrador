@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   include ExceptionHandler
-  include Authenticable
-  before_action :autenticate_request
+  include AuthenticateRequest
+  before_action :current_user
 
   def autenticate_request
     header = request.headers['Authorization']

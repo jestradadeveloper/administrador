@@ -3,6 +3,7 @@ module Api
     class TeamsController < ApplicationController
       before_action :set_team, only: %i[ show update destroy ]
       before_action :check_owner, only: %i[update destroy]
+      before_action :authenticate_user, only: :destroy
       # GET /teams
       # GET /teams.json
       def index
@@ -25,7 +26,7 @@ module Api
       # POST /teams
       # POST /teams.json
       def create
-        @team = @current_user.teams.build(team_params)
+        @team = current_user.teams.build(team_params)
         if @team.save
           render json: @team, status: :created
         else
