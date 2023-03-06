@@ -1,22 +1,48 @@
-
 import { useForm } from "react-hook-form";
-import { useDispatch } from 'react-redux';
-import { addNewTeam } from '../../store/teams/thunks';
+import { useDispatch, useSelector } from "react-redux";
+import { addNewTeam } from "../../store/teams/thunks";
+import { useSnackbar } from "notistack";
+import { useEffect, useCallback } from "react";
 
 const TeamForm = () => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { enqueueSnackbar } = useSnackbar();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+  const { userInfo } = useSelector((state) => state.auth);
+  const { error, errorMessages } = useSelector((state) => state.teams);
   const onTeamCreate = ({ name, description, startDate, endDate }) => {
-    //addNewTeam(name, description, responsible, participants)
-    dispatch(addNewTeam(name, description, startDate, endDate, 1))
-    //console.log(data)
-  }
+    console.log("s", startDate);
+    console.log("e", endDate);
+    dispatch(addNewTeam(name, description, startDate, endDate));
+    reset();
+  };
 
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(`${errorMessages}`, {
+        variant: "error",
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
+    }
+  }, [dispatch, error]);
 
   return (
     <div className="w-full flex-col p-4">
       <strong>Add Team</strong>
-      <form className="w-full mt-6 space-y-3" onSubmit={handleSubmit(onTeamCreate)} noValidate>
+      <form
+        className="w-full mt-6 space-y-3"
+        onSubmit={handleSubmit(onTeamCreate)}
+        noValidate
+      >
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
@@ -31,7 +57,7 @@ const TeamForm = () => {
               required
               placeholder="Team Name"
               {...register("name", {
-                required: 'Team Name is Required'
+                required: "Team Name is Required",
               })}
             />
           </div>
@@ -47,7 +73,7 @@ const TeamForm = () => {
               required
               placeholder="Team Description"
               {...register("description", {
-                required: 'Description is Required'
+                required: "Description is Required",
               })}
             />
           </div>
@@ -64,7 +90,7 @@ const TeamForm = () => {
               required
               placeholder="Start Date"
               {...register("startDate", {
-                required: 'Start Date is Required'
+                required: "Start Date is Required",
               })}
             />
           </div>
@@ -80,7 +106,7 @@ const TeamForm = () => {
               required
               placeholder="End Date"
               {...register("endDate", {
-                required: 'End Date is Required'
+                required: "End Date is Required",
               })}
             />
           </div>
@@ -91,10 +117,7 @@ const TeamForm = () => {
           </div>
         </div>
         <div>
-          <button
-            type="submit"
-            className="btn-primary"
-          >
+          <button type="submit" className="btn-primary">
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               +
             </span>
@@ -103,7 +126,7 @@ const TeamForm = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default TeamForm
+export default TeamForm;

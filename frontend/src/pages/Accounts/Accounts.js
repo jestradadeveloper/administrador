@@ -1,11 +1,20 @@
 import Accounts from "../../components/accounts/Accounts";
 import { DashboardLayout } from "../../components/layouts";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAccounts } from "../../store/accounts/thunks";
+import { getTeams } from "../../store/teams/thunks";
 
 export const AccountsPage = () => {
-    return(
-       <DashboardLayout title="Mind Accounts">
-            <Accounts />
-       </DashboardLayout>
-    )
-}
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAccounts());
+    dispatch(getTeams());
+  }, []);
+  return (
+    <DashboardLayout title="Mind Accounts">
+      <Accounts />
+    </DashboardLayout>
+  );
+};

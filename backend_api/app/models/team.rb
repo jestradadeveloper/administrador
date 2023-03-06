@@ -24,10 +24,10 @@
 #
 class Team < ApplicationRecord
   include OrderableByTimestamp
-  belongs_to :creator, class_name: 'User', foreign_key: 'user_id'
-  has_one :account, inverse_of: :team
-  has_many :members, inverse_of: :participant, dependent: :destroy
-  has_many :participants, through: :members, dependent: :destroy
+  belongs_to :creator, class_name: 'User', foreign_key: 'user_id',  dependent: :delete
+  has_one :account, inverse_of: :team,  dependent: :delete
+  has_many :members, inverse_of: :participant, dependent: :delete_all
+  has_many :participants, through: :members, dependent: :delete_all
   validates :name, :start_date, :end_date, presence: true
   
 end

@@ -1,38 +1,35 @@
-import { useState, useContext , useEffect} from "react";
+import { useState, useContext, useEffect } from "react";
 import { Box, Grid, Link, TextField, Chip, Button } from "@mui/material";
 import { AuthLayout } from "../../../components/layouts";
 import { ErrorOutline } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { validations } from "../../../utils";
-import { AuthContext } from '../../../context/auth/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { startLoginAuthentication } from "../../../store/auth/thunks";
+import { logout, updateErrorState } from "../../../store/auth";
 const LoginPage = () => {
+  const { isLoggedIn, error, errorMessage } = useSelector(
+    (action) => action.auth
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loginUser, isLoggedIn } = useContext(AuthContext)
   useEffect(() => {
-    if(isLoggedIn){
-      navigate('/',{replace:true})
+    if (isLoggedIn) {
+      navigate("/");
     }
-  }, [])
-  
-  const [showError, setShowError] = useState(false);
+  }, [isLoggedIn]);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onLoginUser = async ({ email, password }) => {
-    const isLoggedIn = await loginUser(email,password)
-    if (!isLoggedIn) {
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 3000);
-      return;
-    }
-    //Route to dashboard
-    navigate('/',{replace:true})
-   
+  const onLoginUser = ({ email, password }) => {
+    dispatch(startLoginAuthentication(email, password));
+    setTimeout(() => {
+      dispatch(updateErrorState({ message: null, error: false }));
+    }, 3000);
+    navigate("/");
   };
   return (
     <AuthLayout title={"Ingresar"}>
@@ -40,13 +37,15 @@ const LoginPage = () => {
         <Box sx={{ width: 350, padding: "10px 20px" }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Chip
-                label="User email and password are not valid"
-                color="error"
-                icon={<ErrorOutline />}
-                className="fadeIn"
-                sx={{ display: showError ? "flex" : "none" }}
-              />
+              {error && (
+                <Chip
+                  label={`${errorMessage}`}
+                  color="error"
+                  icon={<ErrorOutline />}
+                  className="fadeIn"
+                  sx={{ display: error ? "flex" : "none" }}
+                />
+              )}
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -55,8 +54,8 @@ const LoginPage = () => {
                 variant="filled"
                 fullWidth
                 {...register("email", {
-                  required: 'Email is Required',
-                  validate: validations.isEmail
+                  required: "Email is Required",
+                  validate: validations.isEmail,
                 })}
                 error={!!errors.email}
                 helperText={errors.email?.message}
@@ -69,8 +68,11 @@ const LoginPage = () => {
                 variant="filled"
                 fullWidth
                 {...register("password", {
-                  required: 'Password is required',
-                  minLength: { value: 6, message: 'Password must be at least 6 characters' }
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
                 })}
                 error={!!errors.password}
                 helperText={errors.password?.message}
@@ -78,9 +80,9 @@ const LoginPage = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
-                color='error'
+                color="error"
                 type="submit"
-                variant='outlined'
+                variant="outlined"
                 size="large"
                 fullWidth
                 disabled={!!errors.email || !!errors.password}

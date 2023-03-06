@@ -2,10 +2,11 @@ module Api
   module V1
     class UsersController < ApplicationController
       before_action :find_user,  only: [:show, :update, :destroy]
+      skip_before_action :autenticate_request, only: [:create]
+      before_action :check_owner, only: %i[update destroy]
       # GET /api/v1/users
       def index
-        @users = User.by_recently_created
-        
+        @users = User.where.not(id: @current_user.id).by_recently_created
         render json: @users, 
         include: params[:include]&.split(','),
         fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) }, 
@@ -52,6 +53,11 @@ module Api
       rescue ActiveRecord::RecordNotFound
         render json: {errors: "User not found"}, status: :not_found
       end
+
+      def check_owner
+        head :forbidden unless @user.user_id == @current_user&.id
+      end
+
       def user_params
         params.require(:user).permit(:name, :email, :password, :english_level,:technical_knowledge, :resume_link)
       end

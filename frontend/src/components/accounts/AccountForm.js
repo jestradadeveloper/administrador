@@ -1,19 +1,46 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from 'react-redux';
-import { addNewAccount } from '../../store/accounts/thunks';
+import { useDispatch, useSelector } from "react-redux";
+import { addNewAccount } from "../../store/accounts/thunks";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
+import TeamSelector from "../teams/TeamSelector";
 
 const AccountForm = () => {
+  const { error, errorMessages } = useSelector((state) => state.accounts);
+  const { teams } = useSelector((state) => state.teams);
+  const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onAccountCreate = ({name, client}) => {
-    //addNewTeam(name, description, responsible, participants)
-    dispatch(addNewAccount(name, client))
-    //console.log(data)
-  }
+  const { enqueueSnackbar } = useSnackbar();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(`${errorMessages}`, {
+        variant: "error",
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
+    }
+  }, [dispatch, error]);
+
+  const onAccountCreate = ({ name, client, teamId }) => {
+    console.log(teamId);
+    dispatch(addNewAccount(name, client, teamId));
+  };
   return (
     <div className="w-full flex-col p-4">
       <strong>Add Account</strong>
-      <form className="w-full mt-6 space-y-3" onSubmit={handleSubmit(onAccountCreate)} noValidate>
+      <form
+        className="w-full mt-6 space-y-3"
+        onSubmit={handleSubmit(onAccountCreate)}
+        noValidate
+      >
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
@@ -28,7 +55,7 @@ const AccountForm = () => {
               required
               placeholder="Account Name"
               {...register("name", {
-                required: 'Name is Required'
+                required: "Name is Required",
               })}
             />
           </div>
@@ -44,37 +71,18 @@ const AccountForm = () => {
               required
               placeholder="Client Name"
               {...register("client", {
-                required: 'Client Name is Required'
+                required: "Client Name is Required",
               })}
             />
           </div>
 
           <div>
-            <label htmlFor="client" className="sr-only">
-              Responsible
-            </label>
-            <input
-              id="responsible"
-              name="responsible"
-              type="text"
-              autoComplete="responsible"
-              required
-              placeholder="Responsible"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="team" className="sr-only">
-              Team
-            </label>
-            <input
-              id="team"
-              name="team"
-              type="text"
-              autoComplete="team"
-              required
-              placeholder="Team"
-            />
+            {teams.lenght !== 0 && (
+              <TeamSelector
+                teams={teams}
+                register={{ ...register("teamId") }}
+              />
+            )}
           </div>
         </div>
         <div>
