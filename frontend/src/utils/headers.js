@@ -1,3 +1,3 @@
 export default function authHeader() {
-  return { Authorization: "Bearer " + localStorage.getItem("token") };
+  return { Authorization: "" + localStorage.getItem("token") };
 }

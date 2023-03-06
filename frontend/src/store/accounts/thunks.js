@@ -12,7 +12,7 @@ export const getAccounts = () => {
   return async (dispatch, getState) => {
     //dispatch(startLoadingAccounts());
     const { data } = await admApi.get(`/accounts`, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+      headers: { Authorization: "" + localStorage.getItem("token") },
     });
     dispatch(setAccounts({ accounts: data.data }));
   };
@@ -23,7 +23,7 @@ export const addNewAccount = (name, client, teamId) => {
     const account = await admApi
       .post("/accounts", {
         account: { name, client, team_id: teamId },
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        headers: { Authorization: "" + localStorage.getItem("token") },
       })
       .then((response) => dispatch(addAccount({ account: response.data.data })))
       .catch((error) => {
