@@ -17,10 +17,10 @@ const TeamPageShow = () => {
   const { active, participants } = useSelector((action) => action.teams);
   useEffect(() => {
     dispatch(showParticipantsByTeamId(teamId));
-  }, [teamId, participants]);
+  }, [teamId, dispatch]);
   useEffect(() => {
     dispatch(setTeamById(teamId));
-  }, [teamId]);
+  }, [teamId, dispatch]);
   const onDestroyMember = (userId) => {
     dispatch(destroyMemberFromTeam(teamId, userId));
   };

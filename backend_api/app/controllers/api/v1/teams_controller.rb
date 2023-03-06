@@ -4,11 +4,10 @@ module Api
       before_action :set_team, only: %i[ show update destroy ]
       before_action :check_owner, only: %i[update destroy]
       before_action :authenticate_user, only: :destroy
-      skip_before_action :autenticate_request, only: [:index]
       # GET /teams
       # GET /teams.json
       def index
-        @teams = current_user.teams
+        @teams = Team.all
         render json: @teams,
         include: params[:include]&.split(','),
         fields: params[:fields]&.as_json&.symbolize_keys&.transform_values { |value| value.split(',').map(&:to_sym) },
@@ -27,7 +26,7 @@ module Api
       # POST /teams
       # POST /teams.json
       def create
-        @team = current_user.teams.build(team_params)
+        @team = Team.new(team_params)
         if @team.save
           render json: @team, status: :created
         else

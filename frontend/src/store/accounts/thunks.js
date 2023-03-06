@@ -18,11 +18,11 @@ export const getAccounts = () => {
   };
 };
 
-export const addNewAccount = (name, client, teamId) => {
+export const addNewAccount = (name, client, teamId, userId) => {
   return async (dispatch, getState) => {
     const account = await admApi
       .post("/accounts", {
-        account: { name, client, team_id: teamId },
+        account: { name, client, team_id: teamId, user_id: userId },
         headers: { Authorization: "" + localStorage.getItem("token") },
       })
       .then((response) => dispatch(addAccount({ account: response.data.data })))

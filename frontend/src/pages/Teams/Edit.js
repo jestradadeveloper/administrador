@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { DashboardLayout } from "../../components/layouts";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -17,7 +17,7 @@ const TeamPageEdit = () => {
   const { users } = useSelector((action) => action.users);
   const { teamId } = useParams();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(showParticipantsByTeamId(teamId));
   }, [teamId]);
@@ -36,6 +36,7 @@ const TeamPageEdit = () => {
   } = useForm();
   const onSubmit = ({ userIds }) => {
     dispatch(addParticipantsByTeamId(teamId, userIds));
+    navigate(`/teams/${teamId}`);
   };
   const participantsIds = [];
   const filtrado = participants?.forEach((v) =>

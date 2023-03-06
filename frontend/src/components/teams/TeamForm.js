@@ -18,7 +18,9 @@ const TeamForm = () => {
   const onTeamCreate = ({ name, description, startDate, endDate }) => {
     console.log("s", startDate);
     console.log("e", endDate);
-    dispatch(addNewTeam(name, description, startDate, endDate));
+    dispatch(
+      addNewTeam(name, description, startDate, endDate, userInfo.userId)
+    );
     reset();
   };
 

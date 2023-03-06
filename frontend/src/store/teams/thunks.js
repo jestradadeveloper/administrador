@@ -5,6 +5,7 @@ import {
   setTeams,
   startLoadingTeams,
   updateErrorTeamState,
+  removeParticipantFromTeam,
   setParticipantsTeamId,
 } from "./teamsSlice";
 import admApi from "../../utils/api";
@@ -20,7 +21,7 @@ export const getTeams = () => {
   };
 };
 
-export const addNewTeam = (name, description, startDate, endDate) => {
+export const addNewTeam = (name, description, startDate, endDate, userId) => {
   return async (dispatch, getState) => {
     const team = await admApi
       .post("/teams", {
@@ -29,6 +30,7 @@ export const addNewTeam = (name, description, startDate, endDate) => {
           description,
           start_date: startDate,
           end_date: endDate,
+          user_id: userId,
         },
         headers: authHeader(),
       })
@@ -90,6 +92,7 @@ export const destroyMemberFromTeam = (teamId, userId) => {
       })
       .then((response) => dispatch(removeParticipantFromTeam({ userId })))
       .catch((error) => {
+        console.log(error);
         dispatch(
           updateErrorTeamState({
             message: JSON.stringify(error.response.data.errors),

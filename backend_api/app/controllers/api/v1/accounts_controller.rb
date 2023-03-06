@@ -6,7 +6,7 @@ module Api
       # GET /accounts
       # GET /accounts.json
       def index
-        @accounts = current_user.accounts
+        @accounts = Account.all
         render json: @accounts, status: :ok
       end
 
@@ -19,7 +19,7 @@ module Api
       # POST /accounts
       # POST /accounts.json
       def create
-        @account = current_user.accounts.build(account_params)
+        @account = Account.new(account_params)
 
         if @account.save
           render json: @account, status: :created

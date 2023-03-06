@@ -19,8 +19,8 @@ export const startLoginAuthentication = (email, password) => {
         password,
       })
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        console.log(response.data.token);
+        localStorage.setItem("token", JSON.stringify(response.data));
+        console.log(response.data);
         dispatch(login(response.data));
         //aqui deberia cargar todos los nuevos datos
       })

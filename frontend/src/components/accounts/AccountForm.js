@@ -31,7 +31,7 @@ const AccountForm = () => {
 
   const onAccountCreate = ({ name, client, teamId }) => {
     console.log(teamId);
-    dispatch(addNewAccount(name, client, teamId));
+    dispatch(addNewAccount(name, client, teamId, userInfo.userId));
   };
   return (
     <div className="w-full flex-col p-4">

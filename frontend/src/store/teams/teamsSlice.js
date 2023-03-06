@@ -41,7 +41,7 @@ export const teamsSlice = createSlice({
     destroyTeam: (state, action) => {
       state.teams = state.teams.filter((obj) => obj.id !== action.payload.id);
     },
-    removeParticipantFromTeam: () => {
+    removeParticipantFromTeam: (state, action) => {
       state.participants = state.participants.filter(
         (obj) => obj.id !== action.payload.userId
       );
