@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { DashboardLayout } from "../../components/layouts";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -23,11 +23,26 @@ const TeamPageShow = () => {
   }, [teamId, dispatch]);
   const onDestroyMember = (userId) => {
     dispatch(destroyMemberFromTeam(teamId, userId));
+    dispatch(showParticipantsByTeamId(teamId));
+    dispatch(setTeamById(teamId));
   };
   return (
     <DashboardLayout title="Show Team">
+      <Link to="/teams" className="my-4">
+        <span className="p-3 bg-red-500 text-white rounded-lg">
+          Back to team list
+        </span>
+      </Link>
       <div className="flex mx-auto w-8/12 justify-between">
-        {active && <TeamCard team={active} id={teamId} actions={false} show />}
+        {active && participants && (
+          <TeamCard
+            team={active}
+            id={teamId}
+            actions={false}
+            show
+            peopleParticipating={participants.length}
+          />
+        )}
         <div className="flex flex-col">
           {participants && <strong>Team's Members</strong>}
           {participants &&

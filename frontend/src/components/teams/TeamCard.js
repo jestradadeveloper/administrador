@@ -1,7 +1,7 @@
 import CardActions from "../ui/CardActions";
 import { useDispatch } from "react-redux";
 import { destroyTeamById } from "../../store/teams/thunks";
-const TeamCard = ({ team, id, actions, show }) => {
+const TeamCard = ({ team, id, actions, show, peopleParticipating }) => {
   const { name, description, responsible, account, people } = team;
   const startDate = team["start-date"];
   const endDate = team["end-date"];
@@ -20,7 +20,7 @@ const TeamCard = ({ team, id, actions, show }) => {
             <strong>Account Assigned:</strong> {account}
           </p>
           <p>
-            <strong>Participants:</strong> {people}
+            <strong>Participants:</strong> {peopleParticipating}
           </p>
           <strong>Working Period:</strong>
           <p>

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { DashboardLayout } from "../../components/layouts";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -20,10 +20,10 @@ const TeamPageEdit = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(showParticipantsByTeamId(teamId));
-  }, [teamId]);
+  }, [teamId, dispatch]);
   useEffect(() => {
     dispatch(setTeamById(teamId));
-  }, [teamId]);
+  }, [teamId, dispatch]);
 
   const [isSubscribed, setIsSubscribed] = useState(false);
   const {
@@ -35,6 +35,7 @@ const TeamPageEdit = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = ({ userIds }) => {
+    dispatch(setTeamById(teamId));
     dispatch(addParticipantsByTeamId(teamId, userIds));
     navigate(`/teams/${teamId}`);
   };
@@ -47,6 +48,11 @@ const TeamPageEdit = () => {
   };
   return (
     <DashboardLayout title={`Edit team`}>
+      <Link to="/teams" className="my-4">
+        <span className="p-3 bg-red-500 text-white rounded-lg">
+          Back to team list
+        </span>
+      </Link>
       {active && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <input

@@ -11,7 +11,13 @@ const TeamList = () => {
     <ListLayout>
       {teams &&
         teams.map((team) => (
-          <TeamCard key={team.id} id={team.id} team={team.attributes} actions />
+          <TeamCard
+            key={team.id}
+            id={team.id}
+            team={team.attributes}
+            actions
+            peopleParticipating={team.attributes.people}
+          />
         ))}
     </ListLayout>
   );
