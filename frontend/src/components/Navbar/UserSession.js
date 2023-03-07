@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import { Button } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { destroyAuthSession } from "../../store/auth/thunks";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+
 import {
   destroyTeamsData,
   destroyAccountsData,
@@ -44,17 +44,20 @@ export const UserSession = () => {
           tabIndex="-1"
         >
           <div className="py-1" role="none">
-            <Button color="error" fullWidth size="large">
-              <NavLink to="/profile">Profile</NavLink>
-            </Button>
-            <Button
-              color="error"
-              fullWidth
-              size="large"
+            <Link
+              to="/profile"
+              className="flex w-full p-3 text-red-500 hover:bg-gray-100 transition"
+            >
+              <AdminPanelSettingsRoundedIcon />
+              Profile
+            </Link>
+            <button
+              className="flex w-full p-3 text-red-500 hover:bg-gray-100 transition"
               onClick={onHandleLogout}
             >
+              <LogoutRoundedIcon />
               Logout
-            </Button>
+            </button>
           </div>
         </div>
       </div>

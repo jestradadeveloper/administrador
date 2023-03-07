@@ -6,7 +6,7 @@ module Api
       # GET /teams
       # GET /teams.json
       def index
-        @teams = Team.all
+        @teams = current_user.teams
         render json: @teams,
                include: params[:include]&.split(","),
                fields:
@@ -59,16 +59,19 @@ module Api
       # DELETE /teams/1.json
       def destroy
         @team.destroy
+        success_team_destroy
       end
 
       private
 
-      # Use callbacks to share common setup or constraints between actions.
+      def check_owner
+        head :forbidden unless @team.creator.id == current_user&.id
+      end
       def set_team
         @team = Team.find(params[:id])
       end
-      def check_owner
-        head :forbidden unless @team.user_id == @current_user&.id
+      def success_team_destroy
+        render status: :no_content, json: {}
       end
       # Only allow a list of trusted parameters through.
       def team_params

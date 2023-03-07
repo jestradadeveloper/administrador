@@ -83,11 +83,14 @@ const TeamPageEdit = () => {
             <div className="text-red-500 font-bold py-3">
               Assing members to the team:
             </div>
-            <div className="list-container">
+            <div className="list-container mb-10">
               {participants && participants.map((p) => console.log(p))}
               {users &&
                 users.map((item, index) => (
-                  <div key={index} className="p-3">
+                  <div
+                    key={index}
+                    className="py-3 font-bold text-red-400 flex items-center"
+                  >
                     {participantsIds?.includes(item.id) ? (
                       <input
                         value={item.id}

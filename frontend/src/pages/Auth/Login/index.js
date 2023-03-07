@@ -12,6 +12,7 @@ const LoginPage = () => {
   const { isLoggedIn, error, errorMessage } = useSelector(
     (action) => action.auth
   );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -27,7 +28,7 @@ const LoginPage = () => {
   const onLoginUser = ({ email, password }) => {
     dispatch(startLoginAuthentication(email, password));
     setTimeout(() => {
-      dispatch(updateErrorState({ message: null, error: false }));
+      dispatch(updateErrorState({ message: "", error: false }));
     }, 3000);
     navigate("/");
   };

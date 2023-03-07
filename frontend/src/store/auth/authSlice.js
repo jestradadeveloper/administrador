@@ -26,6 +26,9 @@ export const authSlice = createSlice({
       state.userToken = action.payload.token;
       state.userInfo = action.payload.user;
     },
+    loadUserProfile: (state, action) => {
+      state.userInfo = action.payload;
+    },
     logout: (state) => {
       state.isLoggedIn = false;
       state.userInfo = null;
@@ -58,4 +61,5 @@ export const {
   checkingCredentials,
   validateAuth,
   updateErrorState,
+  loadUserProfile,
 } = authSlice.actions;

@@ -20,7 +20,7 @@ export const getAccounts = () => {
 };
 
 export const addNewAccount = (name, client, teamId, userId) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const account = await admApi
       .post("/accounts", {
         account: { name, client, team_id: teamId, user_id: userId },
@@ -39,7 +39,7 @@ export const addNewAccount = (name, client, teamId, userId) => {
 };
 
 export const refreshAllAccounts = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(startLoadingAccounts());
     const { data } = await admApi.get(`/accounts`, { headers: authHeader() });
     dispatch(setAccounts({ accounts: data.data }));
@@ -47,7 +47,7 @@ export const refreshAllAccounts = () => {
 };
 
 export const destroyAccountById = (id) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const { data: status } = await admApi.delete(`/accounts/${id}`, {
       headers: authHeader(),
     });

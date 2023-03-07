@@ -1,14 +1,13 @@
 import admApi from "../../utils/api";
-import Cookies from "js-cookie";
+import authHeader from "../../utils/headers";
 import {
   checkingCredentials,
   login,
   logout,
   updateErrorState,
+  loadUserProfile,
   validateAuth,
 } from "./authSlice";
-import { useNavigate } from "react-router-dom";
-// initialize userToken from cookie
 
 export const startLoginAuthentication = (email, password) => {
   return async (dispatch) => {
@@ -33,12 +32,34 @@ export const startLoginAuthentication = (email, password) => {
       );
   };
 };
+export const getAuthenticatedUserInfo = () => {
+  return async (dispatch) => {
+    const { userId } = JSON.parse(localStorage.getItem("token")).user;
+
+    const profile = await admApi
+      .get(`/users/${userId}`, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        dispatch(loadUserProfile(response.data.data.attributes));
+        //aqui deberia cargar todos los nuevos datos
+      })
+      .catch((error) =>
+        dispatch(
+          updateErrorState({
+            messages: error.response.data.error,
+            error: true,
+          })
+        )
+      );
+  };
+};
 
 export const validateAuthSession = () => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token")
-        ? localStorage.getItem("token")
+        ? JSON.parse(localStorage.getItem("token"))
         : "";
 
       dispatch(validateAuth(token));

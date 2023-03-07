@@ -3,7 +3,20 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAccounts } from "../../store/accounts/thunks";
 import { getTeams } from "../../store/teams/thunks";
-import { getUsers } from "../../store/users/thunks";
+import TeamList from "../../components/teams/TeamList";
+import AccountList from "../../components/accounts/AccountList";
 export const DashboardPage = () => {
-  return <DashboardLayout title="Welcome | Dashboard"></DashboardLayout>;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTeams());
+    dispatch(getAccounts());
+  }, [dispatch]);
+
+  return (
+    <DashboardLayout title="Welcome | Dashboard">
+      <TeamList home />
+      <AccountList home />
+    </DashboardLayout>
+  );
 };

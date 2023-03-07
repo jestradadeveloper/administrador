@@ -7,10 +7,15 @@ const TeamCard = ({ team, id, actions, show, peopleParticipating }) => {
   const endDate = team["end-date"];
   const dispatch = useDispatch();
   return (
-    <div className="pt-3 pb-0 sm:py-4">
-      <div className="flex items-center">
-        <div className="flex-col">
-          <p className={`text-red-500 ${show ? "text-4xl" : "text-md"}`}>
+    <div className="pt-3 pb-0 sm:py-4 flex md:flex-row md:items-start items-center flex-col justify-center">
+      <img
+        src={`https://api.dicebear.com/5.x/fun-emoji/svg?size=100&seed=${name}`}
+        alt="avatar"
+        className="mt-2 w-full flex flex-end"
+      />
+      <div className="flex items-center px-3">
+        <div className="flex-col w-full">
+          <p className={`text-red-500 ${show ? "text-4xl" : "text-xl"}`}>
             <strong>{name}</strong>
           </p>
           <p>
@@ -22,12 +27,7 @@ const TeamCard = ({ team, id, actions, show, peopleParticipating }) => {
           <p>
             <strong>Participants:</strong> {peopleParticipating}
           </p>
-          <strong>Working Period:</strong>
-          <p>
-            <span>
-              {startDate} to {endDate}
-            </span>
-          </p>
+
           {actions && (
             <CardActions
               resourceCallback={() => {

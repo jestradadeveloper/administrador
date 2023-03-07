@@ -13,7 +13,7 @@ export const useCheckAuth = () => {
   }, []);
   const onAuthStateChanged = async () => {
     try {
-      const token = JSON.parse(localStorage.getItem("token"));
+      const token = JSON.parse(localStorage.getItem("token").token);
       if (token) {
         const { data } = await admApi.post("/auth/validate-token", {
           token: token,

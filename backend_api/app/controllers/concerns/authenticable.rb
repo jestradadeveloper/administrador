@@ -1,12 +1,18 @@
 module Authenticable
   extend ActiveSupport::Concern
-  require 'json_web_token'
-
-  def current_user
-    return @current_user if @current_user
-    header = request.headers['Authorization']
-    return nil if header.nil?
-    decoded = JsonWebToken.decode(header)
-    @current_user = User.find(decoded[:user_id]) rescue ActiveRecord::RecordNotFound
+  require "json_web_token"
+  included do
+    def current_user
+      return @current_user if @current_user
+      header = request.headers["Authorization"]
+      return nil if header.nil?
+      decoded = JsonWebToken.decode(header)
+      @current_user =
+        begin
+          User.find(decoded[:user_id])
+        rescue StandardError
+          ActiveRecord::RecordNotFound
+        end
+    end
   end
 end

@@ -6,7 +6,7 @@ module Api
       # GET /accounts
       # GET /accounts.json
       def index
-        @accounts = Account.all
+        @accounts = current_user.accounts
         render json: @accounts, status: :ok
       end
 
@@ -55,7 +55,7 @@ module Api
       end
       #only allow to the owner delete their accounts
       def check_owner
-        head :forbidden unless @account.user_id == @current_userr&.id
+        head :forbidden unless @account.creator.id == current_user&.id
       end
       # Only allow a list of trusted parameters through.
       def account_params

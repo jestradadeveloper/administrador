@@ -27,13 +27,13 @@ const TeamPageShow = () => {
     dispatch(setTeamById(teamId));
   };
   return (
-    <DashboardLayout title="Show Team">
-      <Link to="/teams" className="my-4">
-        <span className="p-3 bg-red-500 text-white rounded-lg">
-          Back to team list
-        </span>
-      </Link>
-      <div className="flex mx-auto w-8/12 justify-between">
+    <DashboardLayout title={`Team`}>
+      <div className="flex mx-auto w-full justify-between flex-wrap">
+        <Link to="/teams" className="my-4 w-full">
+          <span className="p-3 bg-red-500 text-white rounded-lg">
+            Back to team list
+          </span>
+        </Link>
         {active && participants && (
           <TeamCard
             team={active}
@@ -43,7 +43,7 @@ const TeamPageShow = () => {
             peopleParticipating={participants.length}
           />
         )}
-        <div className="flex flex-col">
+        <div className="flex flex-col w-4/12">
           {participants && <strong>Team's Members</strong>}
           {participants &&
             participants.map((participant) => (
