@@ -1,10 +1,8 @@
 module Authenticable
   def current_user
     return @current_user if @current_user
-
     header = request.headers["Authorization"]
     return nil if header.nil?
-
     decoded = JsonWebToken.decode(header)
     @current_user =
       begin
@@ -12,5 +10,11 @@ module Authenticable
       rescue StandardError
         ActiveRecord::RecordNotFound
       end
+  end
+
+  protected
+
+  def check_login
+    head :forbidden unless self.current_user
   end
 end

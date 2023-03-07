@@ -2,10 +2,11 @@ module Api
   module V1
     class AccountsController < ApplicationController
       before_action :set_account, only: %i[show update destroy]
+      before_action :check_login, only: %i[index]
       # GET /accounts
       # GET /accounts.json
       def index
-        @accounts = Account.all
+        @accounts = current_user.accounts
         render json: @accounts, status: :ok
       end
 
