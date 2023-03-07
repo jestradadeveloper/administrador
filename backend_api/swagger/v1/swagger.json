@@ -194,6 +194,15 @@
         "tags": [
           "Authentication"
         ],
+        "parameters": [
+          {
+            "name": "auth",
+            "in": "body",
+            "schema": {
+              "$ref": "#/components/schemas/auth"
+            }
+          }
+        ],
         "consumes": [
           "application/json"
         ],
