@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::API
-  include ExceptionHandler
-  include AuthenticateRequest
-  require "json_web_token"
+  include Authenticable
   before_action :authenticate_request!
 
   def authenticate_request!
