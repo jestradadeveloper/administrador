@@ -2,10 +2,11 @@ module Api
   module V1
     class TeamsController < ApplicationController
       before_action :set_team, only: %i[show update destroy]
+      before_action :check_login, only: %i[index create]
       # GET /teams
       # GET /teams.json
       def index
-        @teams = Team.all
+        @teams = current_user.teams
         render json: @teams,
                include: params[:include]&.split(","),
                fields:
