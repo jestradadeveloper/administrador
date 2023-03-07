@@ -2,11 +2,10 @@ module Api
   module V1
     class AccountsController < ApplicationController
       before_action :set_account, only: %i[show update destroy]
-      before_action :check_owner, only: %i[update destroy]
       # GET /accounts
       # GET /accounts.json
       def index
-        @accounts = current_user.accounts
+        @accounts = Account.all
         render json: @accounts, status: :ok
       end
 
@@ -52,10 +51,6 @@ module Api
       # Use callbacks to share common setup or constraints between actions.
       def set_account
         @account = Account.find(params[:id])
-      end
-      #only allow to the owner delete their accounts
-      def check_owner
-        head :forbidden unless @account.creator.id == current_user&.id
       end
       # Only allow a list of trusted parameters through.
       def account_params

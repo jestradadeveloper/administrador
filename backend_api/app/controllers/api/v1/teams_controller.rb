@@ -2,11 +2,10 @@ module Api
   module V1
     class TeamsController < ApplicationController
       before_action :set_team, only: %i[show update destroy]
-      before_action :check_owner, only: %i[update destroy]
       # GET /teams
       # GET /teams.json
       def index
-        @teams = current_user.teams
+        @teams = Team.all
         render json: @teams,
                include: params[:include]&.split(","),
                fields:
@@ -64,9 +63,6 @@ module Api
 
       private
 
-      def check_owner
-        head :forbidden unless @team.creator.id == current_user&.id
-      end
       def set_team
         @team = Team.find(params[:id])
       end
