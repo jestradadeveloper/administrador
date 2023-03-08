@@ -1,8 +1,10 @@
 import admApi from "../../utils/api";
 import authHeader from "../../utils/headers";
+import { setIsLoading, finishLoading } from "../ui";
 import {
   checkingCredentials,
   login,
+  setSavingOn,
   logout,
   updateErrorState,
   loadUserProfile,
@@ -11,7 +13,7 @@ import {
 
 export const startLoginAuthentication = (email, password) => {
   return async (dispatch) => {
-    //dispatch(checkingCredentials(email, password));
+    dispatch(setIsLoading());
     const user = await admApi
       .post("/auth/login", {
         email,
@@ -20,16 +22,19 @@ export const startLoginAuthentication = (email, password) => {
       .then((response) => {
         localStorage.setItem("token", JSON.stringify(response.data));
         dispatch(login(response.data));
+        dispatch(finishLoading());
         //aqui deberia cargar todos los nuevos datos
       })
-      .catch((error) =>
+      .catch((error) => {
+        console.log(error);
+        dispatch(finishLoading());
         dispatch(
           updateErrorState({
             messages: error.response.data.error,
             error: true,
           })
-        )
-      );
+        );
+      });
   };
 };
 export const getAuthenticatedUserInfo = () => {
@@ -61,8 +66,9 @@ export const validateAuthSession = () => {
       const token = localStorage.getItem("token")
         ? JSON.parse(localStorage.getItem("token"))
         : "";
-
-      dispatch(validateAuth(token));
+      if (!!token) {
+        dispatch(validateAuth(token));
+      }
     } catch (error) {
       localStorage.removeItem("token");
       dispatch(logout());

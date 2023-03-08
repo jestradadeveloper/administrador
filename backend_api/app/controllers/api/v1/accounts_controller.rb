@@ -2,7 +2,7 @@ module Api
   module V1
     class AccountsController < ApplicationController
       before_action :set_account, only: %i[show update destroy]
-      before_action :check_login, only: %i[index create]
+      before_action :check_login, only: %i[index create update]
       # GET /accounts
       # GET /accounts.json
       def index

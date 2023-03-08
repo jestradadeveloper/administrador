@@ -9,6 +9,7 @@ export const usersSlice = createSlice({
     active: null,
     error: false,
     errorMessages: null,
+    editMode: false,
   },
   reducers: {
     refreshUsers: (state, action) => {
@@ -33,6 +34,9 @@ export const usersSlice = createSlice({
     startLoadingUsers: (state) => {
       state.isLoading = true;
     },
+    setUserFormMode: (state) => {
+      state.editMode = !state.editMode;
+    },
     destroyUsersData: (state, action) => {
       state.users = [];
     },
@@ -50,6 +54,7 @@ export const {
   refreshUsers,
   setUsers,
   destroyUser,
+  setUserFormMode,
   startLoadingUsers,
   destroyUsersData,
   updateErrorUserState,

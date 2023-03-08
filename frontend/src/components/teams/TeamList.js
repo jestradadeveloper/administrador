@@ -2,11 +2,10 @@ import { useEffect } from "react";
 import TeamCard from "./TeamCard";
 import ListLayout from "../layouts/ListLayout";
 import GridLayout from "../layouts/GridLayout";
-import { useDispatch, useSelector } from "react-redux";
-import { getTeams } from "../../store/teams/thunks";
+import { useSelector } from "react-redux";
 
 const TeamList = ({ home }) => {
-  const { teams, isLoading } = useSelector((state) => state.teams);
+  const { teams } = useSelector((state) => state.teams);
 
   return (
     <>

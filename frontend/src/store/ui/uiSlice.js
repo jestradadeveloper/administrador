@@ -8,6 +8,12 @@ export const uiSlice = createSlice({
     errorMessages: null,
   },
   reducers: {
+    setIsLoading: (state) => {
+      state.isLoading = true;
+    },
+    finishLoading: (state) => {
+      state.isLoading = false;
+    },
     addErrorMessages: (state, action) => {
       state.error = true;
       state.errorMessages = action.payload;
@@ -19,4 +25,9 @@ export const uiSlice = createSlice({
   },
 });
 // Action creators are generated for each case reducer function
-export const { addErrorMessages, removeErrorMessages } = uiSlice.actions;
+export const {
+  setIsLoading,
+  finishLoading,
+  addErrorMessages,
+  removeErrorMessages,
+} = uiSlice.actions;

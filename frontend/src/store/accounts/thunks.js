@@ -3,11 +3,13 @@ import {
   addAccount,
   destroyAccount,
   setAccounts,
+  accountRefresh,
   startLoadingAccounts,
   updateErrorAccountState,
 } from "./accountsSlice";
 import admApi from "../../utils/api";
 import authHeader from "../../utils/headers";
+import { finishLoading, setIsLoading } from "../ui";
 
 export const getAccounts = () => {
   return async (dispatch, getState) => {
@@ -20,6 +22,7 @@ export const getAccounts = () => {
 };
 
 export const addNewAccount = (name, client, teamId, userId) => {
+  console.log("teamId", teamId);
   return async (dispatch) => {
     const account = await admApi
       .post("/accounts", {
@@ -38,6 +41,31 @@ export const addNewAccount = (name, client, teamId, userId) => {
   };
 };
 
+export const updateAccount = (name, client, teamId, accountId) => {
+  return async (dispatch) => {
+    dispatch(setIsLoading());
+    console.log("team", teamId);
+    console.log("account", accountId);
+    const account = await admApi
+      .patch(`/accounts/${accountId}`, {
+        account: { name, client, team_id: teamId },
+        headers: authHeader(),
+      })
+      .then((response) => {
+        dispatch(finishLoading());
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(finishLoading());
+        dispatch(
+          updateErrorAccountState({
+            message: JSON.stringify(error.response.data.errors),
+            error: true,
+          })
+        );
+      });
+  };
+};
 export const refreshAllAccounts = () => {
   return async (dispatch) => {
     dispatch(startLoadingAccounts());

@@ -7,7 +7,8 @@ const initialState = {
   userToken: null, // for storing the JWT
   error: false,
   success: false, // for monitoring the registration process.
-  errorMessages: [],
+  errorMessages: null,
+  isSaved: false,
 };
 
 export const authSlice = createSlice({
@@ -29,6 +30,9 @@ export const authSlice = createSlice({
     loadUserProfile: (state, action) => {
       state.userInfo = action.payload;
     },
+    setSavingOn: (state, action) => {
+      state.isSaved = action.payload;
+    },
     logout: (state) => {
       state.isLoggedIn = false;
       state.userInfo = null;
@@ -48,8 +52,9 @@ export const authSlice = createSlice({
       state.email = user.email;
     },
     updateErrorState: (state, action) => {
+      console.log(action);
       state.error = action.payload.error;
-      state.errorMessages = action.payload.message;
+      state.errorMessages = action.payload.messages;
     },
   },
 });
@@ -58,6 +63,7 @@ export const {
   saveLoggedUser,
   login,
   logout,
+  setSavingOn,
   checkingCredentials,
   validateAuth,
   updateErrorState,

@@ -8,16 +8,18 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { startLoginAuthentication } from "../../../store/auth/thunks";
 import { logout, updateErrorState } from "../../../store/auth";
+import Spinner from "../../../components/ui/Spinner/Spinner";
 const LoginPage = () => {
-  const { isLoggedIn, error, errorMessage } = useSelector(
+  const { isLoggedIn, error, errorMessages } = useSelector(
     (action) => action.auth
   );
-
+  const { isLoading } = useSelector((action) => action.ui);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/");
+      return;
     }
   }, [isLoggedIn]);
   const {
@@ -28,72 +30,76 @@ const LoginPage = () => {
   const onLoginUser = ({ email, password }) => {
     dispatch(startLoginAuthentication(email, password));
     setTimeout(() => {
-      dispatch(updateErrorState({ message: "", error: false }));
+      dispatch(updateErrorState({ messages: "", error: false }));
     }, 3000);
     navigate("/");
   };
   return (
     <AuthLayout title={"Ingresar"}>
-      <form onSubmit={handleSubmit(onLoginUser)} noValidate>
-        <Box sx={{ width: 350, padding: "10px 20px" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              {error && (
-                <Chip
-                  label={`${errorMessage}`}
-                  color="error"
-                  icon={<ErrorOutline />}
-                  className="fadeIn"
-                  sx={{ display: error ? "flex" : "none" }}
+      {!isLoading ? (
+        <form onSubmit={handleSubmit(onLoginUser)} noValidate>
+          <Box sx={{ width: 350, padding: "10px 20px" }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                {error && (
+                  <Chip
+                    label={`${errorMessages}`}
+                    color="error"
+                    icon={<ErrorOutline />}
+                    className="fadeIn"
+                    sx={{ display: error ? "flex" : "none" }}
+                  />
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="email"
+                  label="Email"
+                  variant="filled"
+                  fullWidth
+                  {...register("email", {
+                    required: "Email is Required",
+                    validate: validations.isEmail,
+                  })}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
                 />
-              )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="password"
+                  label="Password"
+                  variant="filled"
+                  fullWidth
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  color="error"
+                  type="submit"
+                  variant="outlined"
+                  size="large"
+                  fullWidth
+                  disabled={!!errors.email || !!errors.password}
+                >
+                  Login
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="email"
-                label="Email"
-                variant="filled"
-                fullWidth
-                {...register("email", {
-                  required: "Email is Required",
-                  validate: validations.isEmail,
-                })}
-                error={!!errors.email}
-                helperText={errors.email?.message}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                type="password"
-                label="Password"
-                variant="filled"
-                fullWidth
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                  },
-                })}
-                error={!!errors.password}
-                helperText={errors.password?.message}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                color="error"
-                type="submit"
-                variant="outlined"
-                size="large"
-                fullWidth
-                disabled={!!errors.email || !!errors.password}
-              >
-                Login
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
-      </form>
+          </Box>
+        </form>
+      ) : (
+        <Spinner />
+      )}
     </AuthLayout>
   );
 };

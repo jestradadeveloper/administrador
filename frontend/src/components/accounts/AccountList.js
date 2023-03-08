@@ -3,8 +3,9 @@ import ListLayout from "../layouts/ListLayout";
 import GridLayout from "../layouts/GridLayout";
 import AccountCard from "./AccountCard";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 const AccountList = ({ home }) => {
-  const { accounts, isLoading } = useSelector((state) => state.accounts);
+  const { accounts } = useSelector((state) => state.accounts);
 
   return (
     <>
@@ -27,6 +28,7 @@ const AccountList = ({ home }) => {
                 key={account.id}
                 id={account.id}
                 account={account.attributes}
+                teamId={account.relationships.team.data.id}
               />
             ))}
         </ListLayout>

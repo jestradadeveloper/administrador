@@ -8,6 +8,7 @@ export const accountsSlice = createSlice({
     isLoading: false,
     active: null,
     error: false,
+    editMode: false,
     errorMessages: null,
   },
   reducers: {
@@ -27,7 +28,11 @@ export const accountsSlice = createSlice({
       );
     },
     setActiveAccount: (state, action) => {
-      state.active = action.payload;
+      state.editMode = action.payload.editMode;
+      state.active = action.payload.account;
+    },
+    setFormMode: (state) => {
+      state.editMode = !state.editMode;
     },
     savingNewAccount: (state) => {
       state.isSaving = true;
@@ -49,8 +54,11 @@ export const {
   refreshAccounts,
   addAccount,
   setAccounts,
+  setActiveAccount,
   destroyAccount,
   startLoadingAccounts,
+  accountRefresh,
   updateErrorAccountState,
   destroyAccountsData,
+  setFormMode,
 } = accountsSlice.actions;

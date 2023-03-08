@@ -10,7 +10,6 @@ const AUTH_INITIAL_STATE = {
   errorMessage: null,
 };
 const init = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
   return {
     isLoggedIn: !!user,
     user: user,

@@ -26,6 +26,7 @@ const UserCard = ({ user, id }) => {
             <strong>Accounts:</strong> {totalAccounts}{" "}
           </span>
           <CardActions
+            resourceName="users"
             resourceCallback={() => {
               dispatch(destroyUserById(id));
             }}

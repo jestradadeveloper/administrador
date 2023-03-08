@@ -1,0 +1,27 @@
+ .spinnerContainer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+ .spinner {
+  transform: rotate(-90deg);
+  width: 120px;
+  height: 120px;
+}
+ .spinner .circle {
+  stroke-linecap: round;;
+  stroke-dasharray: 360;
+  stroke-width: 6;
+  stroke: #FF0100;
+  fill: transparent;
+  animation: spin 0.3s ease-in-out 0s normal infinite;
+}
+@keyframes spin {
+  from {
+    stroke-dashoffset: 360;
+ }
+  to {
+    stroke-dashoffset: 40;
+ }
+}

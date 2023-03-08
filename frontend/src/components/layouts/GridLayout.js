@@ -9,7 +9,10 @@ const GridLayout = ({ children, title }) => {
         </h5>
       </div>
       <div className="my-3 w-full">
-        <ul role="list" className="grid grid-cols-2 md:grid-cols-3 w-full">
+        <ul
+          role="list"
+          className="grid grid-cols-2 md:grid-cols-3 w-full content-strech"
+        >
           {children}
         </ul>
       </div>

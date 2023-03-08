@@ -5,11 +5,12 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setTeamById } from "../../store";
 import TeamCard from "../../components/teams/TeamCard";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import {
   destroyMemberFromTeam,
   showParticipantsByTeamId,
 } from "../../store/teams/thunks";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 const TeamPageShow = () => {
   const { teamId } = useParams();
@@ -30,9 +31,10 @@ const TeamPageShow = () => {
     <DashboardLayout title={`Team`}>
       <div className="flex mx-auto w-full justify-between flex-wrap">
         <Link to="/teams" className="my-4 w-full">
-          <span className="p-3 bg-red-500 text-white rounded-lg">
+          <Button color="error">
+            <ArrowBackIosIcon />
             Back to team list
-          </span>
+          </Button>
         </Link>
         {active && participants && (
           <TeamCard

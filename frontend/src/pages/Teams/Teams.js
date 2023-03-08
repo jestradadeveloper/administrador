@@ -9,7 +9,6 @@ export const TeamsPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getTeams());
     dispatch(getUsers());
   }, []);
   return (

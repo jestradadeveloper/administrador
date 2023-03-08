@@ -16,8 +16,6 @@ const TeamForm = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { error, errorMessages } = useSelector((state) => state.teams);
   const onTeamCreate = ({ name, description, startDate, endDate }) => {
-    console.log("s", startDate);
-    console.log("e", endDate);
     dispatch(
       addNewTeam(name, description, startDate, endDate, userInfo.userId)
     );

@@ -5,9 +5,12 @@ import {
   setUsers,
   updateErrorUserState,
   startLoadingUsers,
+  setUserFormMode,
 } from "./usersSlice";
 import admApi from "../../utils/api";
 import authHeader from "../../utils/headers";
+import { finishLoading, setIsLoading } from "../ui";
+import { setSavingOn } from "../auth";
 
 export const getUsers = () => {
   return async (dispatch, getState) => {
@@ -43,6 +46,38 @@ export const addNewUser = (email, password, name) => {
   };
 };
 
+export const updateProfileData = (userInfo) => {
+  const { userId } = JSON.parse(localStorage.getItem("token")).user;
+  return async (dispatch, getState) => {
+    dispatch(setIsLoading());
+    const user = await admApi
+      .patch(`/users/${userId}`, {
+        user: {
+          name: userInfo.name,
+          email: userInfo.email,
+          english_level: userInfo["english-level"],
+          technical_knowledge: userInfo["technical-knowledge"],
+          resume_link: userInfo["resume-link"],
+        },
+        headers: authHeader(),
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(finishLoading());
+        dispatch(setUserFormMode());
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(finishLoading());
+        dispatch(
+          updateErrorAccountState({
+            message: JSON.stringify(error.response.data.errors),
+            error: true,
+          })
+        );
+      });
+  };
+};
 export const refreshAllUsers = () => {
   return async (dispatch, getState) => {
     dispatch(startLoadingUsers());
