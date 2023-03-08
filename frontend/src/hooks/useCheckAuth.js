@@ -25,10 +25,9 @@ export const useCheckAuth = () => {
       } else {
         dispatch(logout());
       }
-      console.log(token);
+
       return false;
     } catch (error) {
-      console.log(error);
       return false;
     }
   };

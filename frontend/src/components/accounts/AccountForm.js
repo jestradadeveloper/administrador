@@ -11,7 +11,9 @@ const AccountForm = () => {
   const { error, errorMessages, active, editMode } = useSelector(
     (state) => state.accounts
   );
-
+  const { notification, notificationMessage } = useSelector(
+    (state) => state.ui
+  );
   const { teams } = useSelector((state) => state.teams);
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -28,16 +30,6 @@ const AccountForm = () => {
   } = useForm();
   const [dinamicTeamId, setDinamicTeamId] = useState("0");
   useEffect(() => {
-    if (error) {
-      enqueueSnackbar(`${errorMessages}`, {
-        variant: "error",
-        autoHideDuration: 3000,
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-      });
-    }
     if (editMode) {
       const fields = ["name", "client"];
       fields.forEach((field) => setValue(field, active[field]));

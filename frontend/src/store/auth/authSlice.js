@@ -52,7 +52,6 @@ export const authSlice = createSlice({
       state.email = user.email;
     },
     updateErrorState: (state, action) => {
-      console.log(action);
       state.error = action.payload.error;
       state.errorMessages = action.payload.messages;
     },

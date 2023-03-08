@@ -10,17 +10,33 @@ import {
 } from "./teamsSlice";
 import admApi from "../../utils/api";
 import authHeader from "../../utils/headers";
-import { finishLoading, setIsLoading } from "../ui";
+import {
+  addErrorMessages,
+  finishLoading,
+  setIsLoading,
+  setNotificationMessage,
+} from "../ui";
 
 export const getTeams = () => {
   return async (dispatch, getState) => {
     dispatch(setIsLoading());
-    dispatch(startLoadingTeams());
-    const { data } = await admApi.get(`/teams`, {
-      headers: authHeader(),
-    });
-    dispatch(setTeams({ teams: data.data }));
-    dispatch(finishLoading());
+    const data = await admApi
+      .get(`/teams`, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        dispatch(setTeams({ teams: response.data.data }));
+        dispatch(finishLoading());
+      })
+      .catch((error) => {
+        dispatch(setIsLoading());
+        dispatch(
+          setNotificationMessage(
+            "Sorry!, we could not find any team to display right now, try again"
+          )
+        );
+        dispatch(addErrorMessages(error.errors));
+      });
   };
 };
 
@@ -41,6 +57,7 @@ export const addNewTeam = (name, description, startDate, endDate, userId) => {
       .then((response) => {
         dispatch(addTeam({ team: response.data.data }));
         dispatch(finishLoading());
+        dispatch(setNotificationMessage("Congrarts!, your team was created"));
       })
       .catch((error) => {
         dispatch(
@@ -64,7 +81,13 @@ export const showParticipantsByTeamId = (teamId) => {
         dispatch(setParticipantsTeamId({ participants }));
         dispatch(finishLoading());
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        dispatch(
+          setNotificationMessage(
+            "Sorry!, We could not find information for this team, try again"
+          )
+        );
+      });
   };
 };
 export const addParticipantsByTeamId = (teamId, userIds) => {
@@ -79,7 +102,9 @@ export const addParticipantsByTeamId = (teamId, userIds) => {
         headers: authHeader(),
       })
       .then((response) => {
-        console.log(response);
+        dispatch(
+          setNotificationMessage("Congrarts!, you added members to your team")
+        );
         dispatch(finishLoading());
       })
       .catch((error) => {
@@ -107,9 +132,14 @@ export const destroyMemberFromTeam = (teamId, userId) => {
       .then((response) => {
         dispatch(removeParticipantFromTeam({ userId }));
         dispatch(finishLoading());
+        dispatch(setNotificationMessage("Congrarts!, your team was updated"));
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(
+          setNotificationMessage(
+            "Sorry we could not updated this team, try again"
+          )
+        );
         dispatch(
           updateErrorTeamState({
             message: JSON.stringify(error.response.data.errors),
@@ -131,10 +161,24 @@ export const refreshAllTeams = () => {
 export const destroyTeamById = (id) => {
   return async (dispatch, getState) => {
     dispatch(setIsLoading());
-    const { data: status } = await admApi.delete(`/teams/${id}`, {
-      headers: authHeader(),
-    });
-    dispatch(finishLoading());
-    dispatch(destroyTeam({ id: id }));
+    try {
+      const { data: status } = await admApi.delete(`/teams/${id}`, {
+        headers: authHeader(),
+      });
+
+      dispatch(destroyTeam({ id: id }));
+      dispatch(finishLoading());
+      dispatch(
+        setNotificationMessage(
+          ":( Team was deleted it successfully, we hope you can create more amazing teams."
+        )
+      );
+    } catch (error) {
+      dispatch(
+        setNotificationMessage(
+          ":( we could not delete this team from our database"
+        )
+      );
+    }
   };
 };

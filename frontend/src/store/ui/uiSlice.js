@@ -3,6 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export const uiSlice = createSlice({
   name: "ui",
   initialState: {
+    notification: false,
+    notificationMessage: "",
+    notificationType: "info",
     isLoading: false,
     error: false,
     errorMessages: null,
@@ -22,6 +25,13 @@ export const uiSlice = createSlice({
       state.error = fase;
       state.errorMessages = null;
     },
+    setNotificationMessage: (state, action) => {
+      state.notification = true;
+      state.notificationMessage = action.payload;
+    },
+    removeNotification: (state) => {
+      state.notification = false;
+    },
   },
 });
 // Action creators are generated for each case reducer function
@@ -30,4 +40,6 @@ export const {
   finishLoading,
   addErrorMessages,
   removeErrorMessages,
+  setNotificationMessage,
+  removeNotification,
 } = uiSlice.actions;

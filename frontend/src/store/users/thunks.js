@@ -9,7 +9,12 @@ import {
 } from "./usersSlice";
 import admApi from "../../utils/api";
 import authHeader from "../../utils/headers";
-import { finishLoading, setIsLoading } from "../ui";
+import {
+  addErrorMessages,
+  finishLoading,
+  setIsLoading,
+  setNotificationMessage,
+} from "../ui";
 import { setSavingOn } from "../auth";
 
 export const getUsers = () => {
@@ -20,12 +25,20 @@ export const getUsers = () => {
       .then((response) => {
         dispatch(setUsers({ users: response.data.data }));
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        dispatch(
+          setNotificationMessage(
+            "Sorry :( we were not be able to users from our servers try later"
+          )
+        );
+        dispatch(addErrorMessages(error.errors));
+      });
   };
 };
 
 export const addNewUser = (email, password, name) => {
   return async (dispatch, getState) => {
+    dispatch(setIsLoading());
     const data = await admApi
       .post(
         "/users",
@@ -34,13 +47,15 @@ export const addNewUser = (email, password, name) => {
       )
       .then((response) => {
         dispatch(addUser({ user: response.data.data }));
+        dispatch(setNotificationMessage("Congrats! :) a new user was created"));
+        dispatch(finishLoading());
       })
       .catch((error) => {
+        dispatch(setIsLoading());
         dispatch(
-          updateErrorUserState({
-            message: JSON.stringify(error.response.data.errors),
-            error: true,
-          })
+          setNotificationMessage(
+            "Sorry! :) We could not be able to create a new user, try again later"
+          )
         );
       });
   };
@@ -62,18 +77,21 @@ export const updateProfileData = (userInfo) => {
         headers: authHeader(),
       })
       .then((response) => {
-        console.log(response);
         dispatch(finishLoading());
         dispatch(setUserFormMode());
+        dispatch(
+          setNotificationMessage(
+            "Congrats! your profile information was updated correctly"
+          )
+        );
       })
       .catch((error) => {
-        console.log(error);
-        dispatch(finishLoading());
+        //TODO categorizar los errores del servidor
+        dispatch(setIsLoading());
         dispatch(
-          updateErrorAccountState({
-            message: JSON.stringify(error.response.data.errors),
-            error: true,
-          })
+          setNotificationMessage(
+            "sorry! :( we could not be able to update this user profile info"
+          )
         );
       });
   };
@@ -88,9 +106,19 @@ export const refreshAllUsers = () => {
 
 export const destroyUserById = (id) => {
   return async (dispatch, getState) => {
-    const { data: status } = await admApi.delete(`/users/${id}`, {
-      headers: authHeader(),
-    });
-    dispatch(destroyUser({ id: id }));
+    try {
+      const { data: status } = await admApi.delete(`/users/${id}`, {
+        headers: authHeader(),
+      });
+      dispatch(destroyUser({ id: id }));
+      dispatch(setNotificationMessage("User was remove it successfully"));
+    } catch (error) {
+      dispatch(setIsLoading());
+      dispatch(
+        setNotificationMessage(
+          "sorry! :( we could not be able to remove this user from our servers, try again later"
+        )
+      );
+    }
   };
 };

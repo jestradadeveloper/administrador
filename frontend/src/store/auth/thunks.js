@@ -1,6 +1,6 @@
 import admApi from "../../utils/api";
 import authHeader from "../../utils/headers";
-import { setIsLoading, finishLoading } from "../ui";
+import { setIsLoading, finishLoading, setNotificationMessage } from "../ui";
 import {
   checkingCredentials,
   login,
@@ -23,10 +23,19 @@ export const startLoginAuthentication = (email, password) => {
         localStorage.setItem("token", JSON.stringify(response.data));
         dispatch(login(response.data));
         dispatch(finishLoading());
+        dispatch(
+          setNotificationMessage(
+            "Authentication Success! - Welcome to your dashboard"
+          )
+        );
         //aqui deberia cargar todos los nuevos datos
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(
+          setNotificationMessage(
+            "sorry! :( we could not be able to verify your credentials, verify your email and password are correct"
+          )
+        );
         dispatch(finishLoading());
         dispatch(
           updateErrorState({
@@ -49,14 +58,19 @@ export const getAuthenticatedUserInfo = () => {
         dispatch(loadUserProfile(response.data.data.attributes));
         //aqui deberia cargar todos los nuevos datos
       })
-      .catch((error) =>
+      .catch((error) => {
+        dispatch(
+          setNotificationMessage(
+            "sorry! :( we could not be able to verify your credentials, try log in again"
+          )
+        );
         dispatch(
           updateErrorState({
             messages: error.response.data.error,
             error: true,
           })
-        )
-      );
+        );
+      });
   };
 };
 
@@ -70,6 +84,11 @@ export const validateAuthSession = () => {
         dispatch(validateAuth(token));
       }
     } catch (error) {
+      dispatch(
+        setNotificationMessage(
+          "sorry! :( we could not be able to verify your credentials, try log in again"
+        )
+      );
       localStorage.removeItem("token");
       dispatch(logout());
     }
@@ -78,6 +97,11 @@ export const validateAuthSession = () => {
 
 export const destroyAuthSession = () => {
   return async (dispatch) => {
+    dispatch(
+      setNotificationMessage(
+        " :( you have leave your current session, we hope to you again soon"
+      )
+    );
     localStorage.removeItem("token");
     dispatch(logout());
   };
