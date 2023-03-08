@@ -124,7 +124,7 @@ const AccountForm = () => {
               {editMode && (
                 <div className="text-gray-600 font-medium">
                   <span>Last Asigned - </span>
-                  {active["team-assigned"] ? active["team-assigned"] : ""}
+                  {active ? active["team-assigned"] : ""}
                 </div>
               )}
             </label>
